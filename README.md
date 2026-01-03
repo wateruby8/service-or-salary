@@ -24,3 +24,4 @@
 6. react-router
 7. sweetalert2
 8. swiper
+9. gh-pages
