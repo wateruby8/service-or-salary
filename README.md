@@ -15,6 +15,9 @@
 2. 撰寫 routers (App.jsx)
 3. 加入連結 Link 
 
+## 部屬網頁
+1. npm run deploy:all
+
 ## 本專案所使用套件
 1. aos
 2. axios
