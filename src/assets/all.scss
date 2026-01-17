@@ -1,9 +1,44 @@
 // 1. 先自訂變數
-$primary: #F2783C;
+// Colors
+$theme-colors: (
+  "primary-100": #FBF7F5,
+  "primary-300": #FEA375,
+  "primary-500": #F2783C,
+  "primary-700": #C26030,
+  "primary-900": #613018,
+  "primary-950": #30180C,
+  "secondary-500": #433D39,
+  "secondary-700": #252322,
+  "secondary-900": #000000,
+  "neutral": #FFFFFF,
+  "neutral-500": #B0B0B0,
+  "neutral-900": #332E2B,
+  "warning-500": #D8545F
+);
 
+// Tag
+$tag-colors: (
+  "urgent": (
+    "text": #FFFFFF,
+    "bg": #F26944,
+  ),
+  "shortterm": (
+    "text": #1CB178,
+    "bg": #DAF5E0,
+  ),
+  "longterm": (
+    "text": #009CDF,
+    "bg": #D6F4FF,
+  ),
+);
 
-
-
+// 產生 Tag class
+@each $name, $colors in $tag-colors {
+  .tag-#{$name} {
+    color: map-get($colors, "text");
+    background-color: map-get($colors, "bg");
+  }
+}
 
 // 2. 再引入 bootstrap scss
 @import "bootstrap/scss/bootstrap";
