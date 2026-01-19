@@ -1,34 +1,34 @@
 // 1. 先自訂變數
 // Colors
 $theme-colors: (
-  "primary-100": #FBF7F5,
-  "primary-300": #FEA375,
-  "primary-500": #F2783C,
-  "primary-700": #C26030,
+  "primary-100": #fbf7f5,
+  "primary-300": #fea375,
+  "primary-500": #f2783c,
+  "primary-700": #c26030,
   "primary-900": #613018,
-  "primary-950": #30180C,
-  "secondary-500": #433D39,
+  "primary-950": #30180c,
+  "secondary-500": #433d39,
   "secondary-700": #252322,
   "secondary-900": #000000,
-  "neutral": #FFFFFF,
-  "neutral-500": #B0B0B0,
-  "neutral-900": #332E2B,
-  "warning-500": #D8545F
+  "neutral": #ffffff,
+  "neutral-500": #b0b0b0,
+  "neutral-900": #332e2b,
+  "warning-500": #d8545f,
 );
 
 // Tag
 $tag-colors: (
   "urgent": (
-    "text": #FFFFFF,
-    "bg": #F26944,
+    "text": #ffffff,
+    "bg": #f26944,
   ),
   "shortterm": (
-    "text": #1CB178,
-    "bg": #DAF5E0,
+    "text": #1cb178,
+    "bg": #daf5e0,
   ),
   "longterm": (
-    "text": #009CDF,
-    "bg": #D6F4FF,
+    "text": #009cdf,
+    "bg": #d6f4ff,
   ),
 );
 
@@ -39,6 +39,25 @@ $tag-colors: (
     background-color: map-get($colors, "bg");
   }
 }
+
+// Letter Spacing
+$utilities: (
+  "letter-spacing": (
+    property: letter-spacing,
+    class: ls,
+    values: (
+      1: 0.01em,
+      2: 0.02em,
+      4: 0.04em,
+    ),
+  ),
+);
+
+// Line Height
+$line-height-sm: 1.2;
+
+// Font
+$font-family-sans-serif: "Noto Sans TC";
 
 // 2. 再引入 bootstrap scss
 @import "bootstrap/scss/bootstrap";
