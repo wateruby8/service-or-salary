@@ -1,0 +1,22 @@
+// 若要精準控制響應式文字大小 可關閉 RFS
+$enable-rfs: false;
+
+// 自定義通用類別
+$utilities: map-merge(
+  $utilities,
+  (
+    "font-size": map-merge(
+      map-get($utilities, "font-size"),
+      ( responsive: true )
+    ),
+    "letter-spacing": (
+      property: letter-spacing,
+      class: ls,
+      values: (
+        1: 0.01em,
+        2: 0.02em,
+        4: 0.04em,
+      )
+    )
+  )
+);

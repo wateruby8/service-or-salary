@@ -53,7 +53,7 @@ function App() {
           <Route path="/sellguide" element={<SellGuide />}></Route>
           <Route path="/selllist" element={<SellList />}></Route>
           <Route path="/servicerule" element={<ServiceRule />}></Route>
-        </Routes>        
+        </Routes>
       </div>
     </>
   );

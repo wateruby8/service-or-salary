@@ -1,12 +1,17 @@
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
+
+// 自定義變數
+@import "./custom-colors";
+@import "./custom-text";
+
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
 // 自定義變數
-@import "./custom";
+@import "./custom-utilities";
 
 @import "bootstrap/scss/utilities/api";
 @import "bootstrap/scss/bootstrap";

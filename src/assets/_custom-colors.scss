@@ -1,0 +1,41 @@
+$custom-colors: (
+  "primary-100":   #fbf7f5,
+  "primary-300":   #fea375,
+  "primary-500":   #f2783c,
+  "primary-700":   #c26030,
+  "primary-900":   #613018,
+  "primary-950":   #30180c,
+  "secondary-500": #433d39,
+  "secondary-700": #252322,
+  "secondary-900": #000000,
+  "neutral":       #ffffff,
+  "neutral-500":   #b0b0b0,
+  "neutral-900":   #332e2b,
+  "warning-500":   #d8545f
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+// Tag
+$tag-colors: (
+  "urgent": (
+    "text": #ffffff,
+    "bg": #f26944,
+  ),
+  "shortterm": (
+    "text": #1cb178,
+    "bg": #daf5e0,
+  ),
+  "longterm": (
+    "text": #009cdf,
+    "bg": #d6f4ff,
+  ),
+);
+
+// 產生 Tag class
+@each $name, $colors in $tag-colors {
+  .tag-#{$name} {
+    color: map-get($colors, "text");
+    background-color: map-get($colors, "bg");
+  }
+}
