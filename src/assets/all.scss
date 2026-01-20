@@ -1,63 +1,12 @@
-// 1. 先自訂變數
-// Colors
-$theme-colors: (
-  "primary-100": #fbf7f5,
-  "primary-300": #fea375,
-  "primary-500": #f2783c,
-  "primary-700": #c26030,
-  "primary-900": #613018,
-  "primary-950": #30180c,
-  "secondary-500": #433d39,
-  "secondary-700": #252322,
-  "secondary-900": #000000,
-  "neutral": #ffffff,
-  "neutral-500": #b0b0b0,
-  "neutral-900": #332e2b,
-  "warning-500": #d8545f,
-);
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
 
-// Tag
-$tag-colors: (
-  "urgent": (
-    "text": #ffffff,
-    "bg": #f26944,
-  ),
-  "shortterm": (
-    "text": #1cb178,
-    "bg": #daf5e0,
-  ),
-  "longterm": (
-    "text": #009cdf,
-    "bg": #d6f4ff,
-  ),
-);
+// 自定義變數
+@import "./custom";
 
-// 產生 Tag class
-@each $name, $colors in $tag-colors {
-  .tag-#{$name} {
-    color: map-get($colors, "text");
-    background-color: map-get($colors, "bg");
-  }
-}
-
-// Letter Spacing
-$utilities: (
-  "letter-spacing": (
-    property: letter-spacing,
-    class: ls,
-    values: (
-      1: 0.01em,
-      2: 0.02em,
-      4: 0.04em,
-    ),
-  ),
-);
-
-// Line Height
-$line-height-sm: 1.2;
-
-// Font
-$font-family-sans-serif: "Noto Sans TC";
-
-// 2. 再引入 bootstrap scss
+@import "bootstrap/scss/utilities/api";
 @import "bootstrap/scss/bootstrap";

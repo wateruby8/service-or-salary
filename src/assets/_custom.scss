@@ -1,0 +1,69 @@
+// Colors
+$theme-colors: (
+  "primary-100": #fbf7f5,
+  "primary-300": #fea375,
+  "primary-500": #f2783c,
+  "primary-700": #c26030,
+  "primary-900": #613018,
+  "primary-950": #30180c,
+  "secondary-500": #433d39,
+  "secondary-700": #252322,
+  "secondary-900": #000000,
+  "neutral": #ffffff,
+  "neutral-500": #b0b0b0,
+  "neutral-900": #332e2b,
+  "warning-500": #d8545f,
+);
+
+// Tag
+$tag-colors: (
+  "urgent": (
+    "text": #ffffff,
+    "bg": #f26944,
+  ),
+  "shortterm": (
+    "text": #1cb178,
+    "bg": #daf5e0,
+  ),
+  "longterm": (
+    "text": #009cdf,
+    "bg": #d6f4ff,
+  ),
+);
+
+// 產生 Tag class
+@each $name, $colors in $tag-colors {
+  .tag-#{$name} {
+    color: map-get($colors, "text");
+    background-color: map-get($colors, "bg");
+  }
+}
+
+// Line Height
+$line-height-sm: 1.2;
+
+// Font Family
+$font-family-sans-serif: "Noto Sans TC";
+
+// 若要精準控制響應式文字大小 可關閉 RFS
+$enable-rfs: false;
+
+// 自定義通用類別
+$utilities: map-merge(
+  $utilities,
+  (
+    "font-size": map-merge(
+      map-get($utilities, "font-size"),
+      ( responsive: true )
+    ),
+    "letter-spacing": (
+      property: letter-spacing,
+      class: ls,
+      values: (
+        1: 0.01em,
+        2: 0.02em,
+        4: 0.04em,
+      )
+    )
+  )
+);
