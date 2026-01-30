@@ -6,8 +6,8 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-md bg-body-tertiary">
             <div className="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -16,43 +16,22 @@ export default function Navbar() {
                         </li>
                         <li className="nav-item">
                             <Link className='nav-link' to='/login'>登入</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/about'>關於我們</Link>
-                        </li>
+                        </li>                        
                         <li className="nav-item">
                             <Link className='nav-link' to='/buydemo'>外包內容詳細頁</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/buyguide'>買家須知</Link>
-                        </li>
+                       
                         <li className="nav-item">
                             <Link className='nav-link' to='/buylist'>接案者列表</Link>
                         </li>
                         <li className="nav-item">
                             <Link className='nav-link' to='/forgetpassword'>忘記密碼</Link>
-                        </li>
+                        </li> 
+                       
                         <li className="nav-item">
-                            <Link className='nav-link' to='/membercalendar'>會員行事曆</Link>
+                            <Link className='nav-link' to='/member'>會員中心</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/memberfavorite'>會員收藏</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/memberidentify'>會員身分驗證</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/memberindex'>會員中心</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/memberinfo'>會員個人專頁</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/memberrecord'>會員服務紀錄</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/policy'>隱私政策</Link>
-                        </li>
+                       
                         <li className="nav-item">
                             <Link className='nav-link' to='/postbuytime'>刊登買時間</Link>
                         </li>   <li className="nav-item">
@@ -66,17 +45,11 @@ export default function Navbar() {
                         </li>
                         <li className="nav-item">
                             <Link className='nav-link' to='/selldemo'>接案者的公開資料</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/sellguide'>賣家指南</Link>
-                        </li>
+                        </li>                    
                         <li className="nav-item">
                             <Link className='nav-link' to='/selllist'>外包服務列表</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className='nav-link' to='/servicerule'>服務條款</Link>
-                        </li>
-
+                      
                     </ul>
                 </div>
             </div>
