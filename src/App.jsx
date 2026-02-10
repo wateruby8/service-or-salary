@@ -9,10 +9,11 @@ function App() {
     <>
       <Header />
       <div className="container">
-        <Outlet />
+        {/* 網頁主要區塊 */}
+        {/* <Outlet /> */}
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

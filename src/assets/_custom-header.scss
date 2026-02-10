@@ -1,0 +1,31 @@
+.header {
+  background-color: map-get($custom-colors, "neutral-500");
+  transition: background-color 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
+  opacity: 1;
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+  }
+
+  &--scrolled {
+    background-color: #332e2b;
+    opacity: 0.9;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.header-height {
+  height: 64px;
+
+  @include media-breakpoint-up(md) {
+    height: 108px;
+  }
+}
+
+.header-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  line-height: 1;
+}
