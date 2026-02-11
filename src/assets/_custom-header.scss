@@ -26,6 +26,17 @@
 
 .header-link {
   display: inline-block;
-  padding: 0.5rem 1rem;
-  line-height: 1;
+
+  // 預設顏色
+  color: map-get($custom-colors, "neutral");
+
+  // Hover
+  &:hover {
+    color: map-get($custom-colors, "primary-300");
+  }
+
+  // Active
+  &:active {
+    color: map-get($custom-colors, "primary-500");
+  }
 }

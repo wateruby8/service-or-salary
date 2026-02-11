@@ -39,12 +39,12 @@ export default function Header() {
           <nav className="header-nav">
             <ul className="d-flex fs-4 ls-2 fw-bold mb-0 list-unstyled">
               <li>
-                <a href="/" className="link-neutral header-link me-5 text-decoration-none">
+                <a href="/" className="header-link me-5 text-decoration-none">
                   賣時間
                 </a>
               </li>
               <li>
-                <a href="/" className="link-neutral header-link text-decoration-none">
+                <a href="/" className="header-link text-decoration-none">
                   買時間
                 </a>
               </li>
@@ -53,7 +53,7 @@ export default function Header() {
 
           {/* 註冊 / 登入 */}
           <div className="fs-4 ls-2">
-            <a href="/" className="link-neutral header-link text-decoration-none">
+            <a href="/" className="header-link text-decoration-none">
               註冊 / 登入
             </a>
           </div>
