@@ -1,0 +1,24 @@
+$grid-breakpoints: (
+  sm:576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+$section-spacing-lg: $spacer * 9;
+$section-spacing-sm: $spacer * 4;
+
+@mixin rwd-up($size) {
+  @media (min-width: map-get($grid-breakpoints, $size)) {
+    @content;
+  }
+}
+
+.section-py{
+    padding-top: $section-spacing-sm;
+    padding-bottom: $section-spacing-sm;
+    @include rwd-up(lg){
+        padding-top: $section-spacing-lg;
+        padding-bottom: $section-spacing-lg;
+    }
+}
+
