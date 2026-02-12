@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,18 +26,24 @@ export default function Header() {
 
   // 背景目前有底色 記得到時改成透明的
   return (
-    <header className={`header header--sticky ${isScrolled ? "header--scrolled" : ""}`}>
+    <header
+      className={`header header--sticky ${isScrolled ? "header--scrolled" : ""}`}
+    >
       <div className="container">
         <div className="d-flex align-items-center justify-content-between header-height">
           {/* Logo */}
-          <div className="header-logo">
-            <a href="/" className="text-decoration-none fw-bold link-neutral">
-              ( LOGO ) 時 務 所
-            </a>
+          <div>
+            <Link to="/" className="d-inline-block">
+              <img
+                src={`${import.meta.env.BASE_URL}logo_light_01.svg`}
+                alt="時務所"
+                style={{ height: "40px" }}
+              />
+            </Link>
           </div>
 
           {/* 主導覽 */}
-          <nav className="header-nav">
+          <nav>
             <ul className="d-flex fs-4 ls-2 fw-bold mb-0 list-unstyled">
               <li>
                 <a href="/" className="header-link me-5 text-decoration-none">
