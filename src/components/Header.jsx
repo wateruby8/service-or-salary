@@ -3,6 +3,18 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     let ticking = false;
@@ -31,36 +43,38 @@ export default function Header() {
       <div className="container">
         <div className="d-flex align-items-center justify-content-between header-height">
           {/* Logo */}
-          <div>
-            <Link to="/" className="d-inline-block mb-0">
+          <div className="header-item">
+            <Link to="/" className="d-inline-block">
               <img
-                src={`${import.meta.env.BASE_URL}logo-full-light.svg`}
+                src={`${import.meta.env.BASE_URL}${
+                  isMobile ? "logo-full-light-sm.svg" : "logo-full-light.svg"
+                }`}
                 alt="時務所"
               />
             </Link>
           </div>
 
           {/* 主導覽 */}
-          <nav>
-            <ul className="d-flex fs-4 ls-2 fw-bold mb-0 list-unstyled">
+          <nav className="header-item">
+            <ul className="d-flex list-unstyled mb-0 header-nav-text">
               <li>
-                <a href="/" className="header-link me-5 text-decoration-none">
+                <Link to="/" className="header-link text-decoration-none">
                   賣時間
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="header-link text-decoration-none">
+                <Link to="/" className="header-link text-decoration-none">
                   買時間
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
 
-          {/* 註冊 / 登入 */}
-          <div className="fs-4 ls-2">
-            <a href="/" className="header-link text-decoration-none">
-              註冊 / 登入
-            </a>
+          {/* 登入 */}
+          <div className="header-item header-auth-text">
+            <Link to="/" className="header-link text-decoration-none">
+              {isMobile ? "登入" : "註冊 / 登入"}
+            </Link>
           </div>
         </div>
       </div>
