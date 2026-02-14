@@ -4,6 +4,14 @@ $line-height-sm: 1.2;
 // Font Family
 $font-family-sans-serif: "Noto Sans TC";
 
+// Font Size
+$font-sizes: map-merge(
+  $font-sizes,
+  (
+    7: 14px
+  )
+);
+
 // P、Heading系列的margin-bottom
 $paragraph-margin-bottom:   none;
 $headings-margin-bottom:      none;
