@@ -24,7 +24,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // 背景目前有底色 記得到時改成透明的
   return (
     <header
       className={`header header--sticky ${isScrolled ? "header--scrolled" : ""}`}
@@ -33,11 +32,10 @@ export default function Header() {
         <div className="d-flex align-items-center justify-content-between header-height">
           {/* Logo */}
           <div>
-            <Link to="/" className="d-inline-block">
+            <Link to="/" className="d-inline-block mb-0">
               <img
-                src={`${import.meta.env.BASE_URL}logo_light_01.svg`}
+                src={`${import.meta.env.BASE_URL}logo-full-light.svg`}
                 alt="時務所"
-                style={{ height: "40px" }}
               />
             </Link>
           </div>

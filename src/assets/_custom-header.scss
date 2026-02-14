@@ -1,6 +1,9 @@
 .header {
   background-color: map-get($custom-colors, "neutral-500");
-  transition: background-color 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    opacity 0.25s ease,
+    box-shadow 0.25s ease;
   opacity: 1;
 
   &--sticky {
