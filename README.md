@@ -28,3 +28,4 @@
 7. sweetalert2
 8. swiper
 9. gh-pages
+10. phosphor icons
