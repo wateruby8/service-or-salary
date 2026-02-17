@@ -12,8 +12,7 @@ function App() {
         {/* 網頁主要區塊 */}
         {/* <Outlet /> */}
       </div>
-
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }
