@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import Header from "./components/Header";
+import Home from "./pages/Home";
 import { Outlet, NavLink } from "react-router-dom";
 
 function App() {
@@ -6,7 +9,8 @@ function App() {
     <>
       <Header />
       <div className="container">
-        <Outlet />
+        <Home />
+        {/* <Outlet /> */}
       </div>
     </>
   );
