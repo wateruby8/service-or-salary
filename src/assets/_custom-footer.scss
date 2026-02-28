@@ -1,0 +1,40 @@
+.footer-desktop {
+  &.is-home {
+    background-color: map-get($custom-colors, "primary-100");
+  }
+
+  &.not-home {
+    background-color: map-get($custom-colors, "neutral");
+  }
+}
+
+.footer-socialLink {
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: map-get($custom-colors, "primary-300");
+  }
+
+  &:active {
+    color: map-get($custom-colors, "primary-500");
+  }
+}
+
+.footer-divider {
+  border: 1px;
+  height: 1px;
+  background: map-get($custom-colors, "neutral-500");
+}
+
+.footer-link {
+  color: map-get($custom-colors, "neutral-900");
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: map-get($custom-colors, "primary-300");
+  }
+
+  &:active {
+    color: map-get($custom-colors, "primary-500");
+  }
+}
