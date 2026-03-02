@@ -1,7 +1,7 @@
 // 若要精準控制響應式文字大小 可關閉 RFS
 $enable-rfs: false;
 
-// 自定義通用類別
+// 自定義行高
 $utilities: map-merge(
   $utilities,
   (

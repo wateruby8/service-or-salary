@@ -8,12 +8,18 @@
 
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
 
 // 自定義變數
+@import "./custom-spacers";
+
+@import "bootstrap/scss/utilities";
+
 @import "./custom-utilities";
 
 @import "bootstrap/scss/utilities/api";
 @import "bootstrap/scss/bootstrap";
 
+// 自定義變數
 @import "./custom-home";
+@import "./custom-header";
+@import "./custom-footer";

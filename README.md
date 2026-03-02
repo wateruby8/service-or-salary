@@ -4,8 +4,7 @@
 3. 執行環境 npm run dev
 
 ## 建立新分支
-1. git branch -b 分支名
-2. git checkout 分支名
+1. git checkout -b 分支名
 
 ## 編輯前，請先確認分支
 1. git branch
@@ -28,3 +27,4 @@
 7. sweetalert2
 8. swiper
 9. gh-pages
+10. phosphor icons

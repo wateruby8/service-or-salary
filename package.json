@@ -12,13 +12,16 @@
     "deploy:all": "npm run build && npm run deploy"
   },
   "dependencies": {
+    "@fullcalendar/bootstrap5": "^6.1.20",
     "@fullcalendar/core": "^6.1.20",
     "@fullcalendar/daygrid": "^6.1.20",
     "@fullcalendar/react": "^6.1.20",
+    "@phosphor-icons/react": "^2.1.10",
     "aos": "^2.3.4",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "nouislider": "^15.8.1",
+    "phosphor-react": "^1.4.1",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.0",
