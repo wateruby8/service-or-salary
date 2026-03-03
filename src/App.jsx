@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import { Outlet, NavLink ,useLocation } from "react-router-dom";
 
@@ -22,6 +23,7 @@ function App() {
                 {/* <Outlet /> */}
               </div>
             )}
+      <Footer />      
     </>
   );
 }
