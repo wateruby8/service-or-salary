@@ -1,3 +1,4 @@
+//--## 通用
 $grid-breakpoints: (
   sm:576px,
   md: 768px,
@@ -14,11 +15,216 @@ $section-spacing-sm: $spacer * 4;
 }
 
 .section-py{
-    padding-top: $section-spacing-sm;
-    padding-bottom: $section-spacing-sm;
-    @include rwd-up(lg){
-        padding-top: $section-spacing-lg;
-        padding-bottom: $section-spacing-lg;
+    @include rwd-up(md){
+      padding-top: $section-spacing-lg !important;
+      padding-bottom: $section-spacing-lg !important;
+      // margin-top: $section-spacing-lg;
+      // margin-bottom: $section-spacing-lg;
     }
 }
+.fullbg-sm{
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+ 
+  @include rwd-up(md){
+    width: 100%;
+    position:static;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    transform: none;
+  }
+}
+//--## Icon
+.search-icon{
+  color: map-get($custom-colors, "neutral");
+  width: 20px;
+  height: 20px;
+  @include rwd-up(md){
+    width: 24px;
+    height: 24px;
+  }
+}
+//--## hero sec
+.home-hero-title{
+  font-size: 24px;
+  @include rwd-up(md){
+    font-size: 48px;
+  }
+}
+.home-hero{
+  background-image: url(/public/homepage-imgs/sm/hero.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 164px;
+  padding-bottom: 100px;
 
+    @include rwd-up(md){
+      background-image: url(/public/homepage-imgs/01hero.png);
+      padding-top: 364px;
+      padding-bottom: 364px;
+      width: 100%;
+
+  }
+
+}
+//--### 搜尋
+.dropdown-toggle::after {
+  display: none !important;
+}
+.search-divider{
+  position: relative;
+  &::after{
+    content: '';
+    position: absolute;
+    display: block;
+    width: 1px;
+    height: 32px;
+    background-color: map-get($custom-colors, "neutral-500");
+    z-index: 5;
+    transform: translateX(-50%);
+    transform: translateY(-50%);
+    top: 50%;
+    @include rwd-up(md){
+      height: 64px;
+    }
+  }
+}
+//--## sec1
+.home-s1-bg{
+  background-image: url(/public/homepage-imgs/sm/sec1.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 239px;
+  @include rwd-up(md){
+    background-image: url(/public/homepage-imgs/02sec1-1.png);
+    height: 449px;
+  }
+}
+.home-s1-bg-md-end{
+  @include rwd-up(md){
+    background-image: url(/public/homepage-imgs/03sec1-2.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: 125% -20% ;
+  }
+}
+.home-rounded{
+  @include rwd-up(md){
+    border-radius: 16px;
+  }
+}
+.home-s2-bg-start{
+    border-radius: 24px 0 0 24px;
+    background-image: url(/public/homepage-imgs/sm/sec2.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    @include rwd-up(md){
+      
+      background-image: none;
+      position: relative;
+      &::before{
+        position: absolute;
+        content: '';
+        display: block;
+        background-image: url(/public/homepage-imgs/04sec2.png);
+        background-size: auto;
+        background-repeat: no-repeat;
+        width: calc(60% - 17px);             // 優先填滿父層
+        max-width: 1144px;
+        height: 100%;
+        border-radius: 0 48px 48px 0 ;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+    }
+}
+.home-s2-bg-end{
+  position: relative;
+  &::after{
+    position: absolute;
+    display: block;
+    content: '';
+    width: calc(40% - 17px);
+    max-width: 742px;
+    height: 58%;
+    max-height: 503px;
+    background-color: map-get($custom-colors, "primary-100");
+    border-radius: 48px 0 0 48px;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+}
+//--## 卡片設定
+.card-task-custom{
+  max-width: 70vw;
+  border-radius: 0.75rem;
+  @include rwd-up(md){
+    max-width: 100%;
+  }
+  svg { 
+    width: 1rem;  // 手機版 (16px)
+    height: 1rem;
+
+    @include rwd-up(md) {
+      width: 1.25rem; // 桌機版 (20px)
+      height: 1.25rem;
+    }
+  }
+}
+
+.card-tasktag-cover{
+  position: relative;
+  overflow: hidden;
+  margin-right: -1.5rem;
+  @include rwd-up(lg){
+    margin-right: -2.25rem;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none; // 確保可以點擊到下方的標籤
+    
+    // 漸層設定：右往左 (to left)
+    // 0% - 30% 是純白，30% - 100% 漸變到透明
+    background: linear-gradient(
+      to left,
+      rgb(255, 255, 255) 0%,
+      rgba(255, 255, 255, 1) 30%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+// .card-task-icon{
+
+// }
+.card-task-shadow {
+  box-shadow: 7.5px 8.65px 11.54px rgba(0, 0, 0, 0.04);
+  @include rwd-up(md){
+    box-shadow: 13px 15px 20px rgba(0, 0, 0, 0.04);
+  }
+}
+.shadow-container-spacer {
+  padding-top: 20px;
+  padding-bottom: 40px; // 留多一點給 Y 軸偏移
+  padding-left: 20px;
+  padding-right: 20px;
+  
+  // 抵銷 Bootstrap row 的負邊距（選用，看你的排版需求）
+  margin-top: -20px;
+  margin-bottom: -40px;
+}
