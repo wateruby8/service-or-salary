@@ -12,6 +12,7 @@
     "deploy:all": "npm run build && npm run deploy"
   },
   "dependencies": {
+    "@fullcalendar/bootstrap5": "^6.1.20",
     "@fullcalendar/core": "^6.1.20",
     "@fullcalendar/daygrid": "^6.1.20",
     "@fullcalendar/react": "^6.1.20",
