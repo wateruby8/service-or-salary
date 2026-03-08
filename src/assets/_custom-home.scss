@@ -72,9 +72,143 @@ $section-spacing-sm: $spacer * 4;
 
 }
 //--### 搜尋
+.search-bar-container {
+  transition: all 0.3s ease; /* 讓發光效果更平滑 */
+  border: 1px solid transparent; /* 預留邊框位置防止抖動 */
+  @include rwd-up(md){
+      border: 3px solid transparent;
+  }
+  &:focus-within {
+    border-color: map-get($custom-colors, "primary-300");   /* 舉例：邊框變色 */
+    box-shadow: 0 0 0 1px #fea3754c; /* 舉例：外發光效果 */
+    @include rwd-up(md){
+      box-shadow: 0 0 0 2px #fea3754c;
+    }
+  }
+}
 .dropdown-toggle::after {
   display: none !important;
 }
+//--#### md-分類清單
+.dropdown-menu {
+  // 針對電腦版設定
+  @include rwd-up(md) {
+    margin-top: 38px !important;
+    margin-bottom: 38px !important; // 使用 !important 確保覆蓋 Popper 的自動定位
+    
+    // 選用：增加一個透明的隱形區域，防止滑鼠移過去時選單消失（如果之後要改 Hover 觸發的話）
+    &::before {
+      content: "";
+      position: absolute;
+      top: -16px;
+      left: 0;
+      right: 0;
+      height: 16px;
+    }
+  }
+}
+//-------處理md下拉式選單 / off-canvas的互動效果
+//---選擇副分類後，超出字數的漸變淡出
+.text-fade-mask {
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  /* 當啟動時，右側 20% 的範圍會從不透明轉為透明 */
+  mask-image: linear-gradient(to right, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 70%, transparent 100%);
+  
+  /* 設定最大寬度，大約 5 個全形字的寬度 */
+  max-width: 5.5em; 
+}
+.custom-home-select-itemA{
+  // --- 基礎增強 ---
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;// 加入過渡動畫
+  // --外觀設定--
+  font-size: 20px;
+  line-height: 120%;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  letter-spacing: 0.02rem;
+  font-weight: 500;
+  text-align: center;
+  background-color: map-get($custom-colors, "neutral");
+  @include rwd-up(md){
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  @include rwd-up(lg){
+    font-size: 24px;
+  }
+  &:hover,&:focus{
+    color: map-get($custom-colors, "primary-700");
+  }
+  &.active , &:active{
+    color: map-get($custom-colors, "primary-300");
+  }
+}
+.custom-home-select-itemB{
+  // --- 基礎增強 ---
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;// 加入過渡動畫
+  //----
+  background-color: map-get($custom-colors, "primary-100");
+  padding: 0;
+  font-weight: 500;
+  line-height: 150%;
+  border-radius: 8px;
+  @include rwd-up(md){
+    border-radius: 12px;
+  }
+  @include rwd-up(lg){
+    font-size: 20px;
+    line-height: 150%;
+    letter-spacing: 0.01rem;
+  }
+  &:hover,&.active,&:focus,&:active{
+    color: map-get($custom-colors, "primary-500");
+    img{
+      filter: blur(2px);          // 調整模糊程度
+      transform: scale(1.01);      // 稍微放大以消除邊緣模糊產生的白邊
+      transition: 0.3s ease-in-out;
+    }
+  }
+}
+//-------下拉式選單的切線
+.sub-category-divider{
+  position: relative;
+  &::before{
+    content: '';
+    display: block;
+    width: 1px;
+    height: 100%;
+    background-color: map-get($custom-colors, "neutral-500");
+    position: absolute;
+  }    
+}
+//-------offcanvas容器
+.custom-home-offcanvas{
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  margin: 0 auto;
+  width: calc(100% - 24px);
+  height: auto !important;
+  max-height: 70vh;
+  border-radius: 16px 16px 0 0 !important;
+  box-shadow: 13px 15px 20px rgba(0, 0, 0, 0.04);
+}
+//-------搜尋欄的切線
 .search-divider{
   position: relative;
   &::after{
@@ -82,7 +216,7 @@ $section-spacing-sm: $spacer * 4;
     position: absolute;
     display: block;
     width: 1px;
-    height: 32px;
+    height: 100%;
     background-color: map-get($custom-colors, "neutral-500");
     z-index: 5;
     transform: translateX(-50%);
@@ -90,6 +224,33 @@ $section-spacing-sm: $spacer * 4;
     top: 50%;
     @include rwd-up(md){
       height: 64px;
+    }
+  }
+}
+
+// 行動版 Offcanvas 特殊排版
+.category-offcanvas {
+  // 達成 X 軸 12px margin 的視覺效果
+  left: 12px !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  width: calc(100% - 24px) !important;
+  
+  // 圓角與高度設定
+  height: auto !important;
+  max-height: 70vh;
+  border-radius: 20px 20px 20px 20px !important; // 四角圓角或僅上方
+  border: none !important;
+  box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.1);
+  
+  .offcanvas-body {
+    padding-top: 0.5rem;
+  }
+
+  .list-group-item {
+    font-size: 1.1rem;
+    &:active {
+      background-color: #f8f9fa; // 點擊回饋
     }
   }
 }
@@ -118,6 +279,7 @@ $section-spacing-sm: $spacer * 4;
     border-radius: 16px;
   }
 }
+//--## sec2
 .home-s2-bg-start{
     border-radius: 24px 0 0 24px;
     background-image: url(/homepage-imgs/sm/sec2.png);
@@ -162,32 +324,143 @@ $section-spacing-sm: $spacer * 4;
     z-index: -1;
   }
 }
-//--## 卡片設定
-.card-task-custom{
-  max-width: 70vw;
-  border-radius: 0.75rem;
+.home-s2-py{
   @include rwd-up(md){
-    max-width: 100%;
+    padding-top: 144px !important;
+    padding-bottom: 80px !important;
   }
-  svg { 
-    width: 1rem;  // 手機版 (16px)
-    height: 1rem;
-
-    @include rwd-up(md) {
-      width: 1.25rem; // 桌機版 (20px)
-      height: 1.25rem;
-    }
+}
+//--## sec3
+.sec3-block-start{
+  @include rwd-up(md){
+    padding-right: 110px;
   }
 }
 
-.card-tasktag-cover{
+//--## sec4
+.sec4-rounded{
+  border-radius: 34px 34px 0 0;
+    @include rwd-up(md){
+    border-radius: 84px 84px 0 0;
+  }
+}
+//--## sec5
+.home-s5-bgimg-cover {
+  position: relative;      // 必須設定，讓偽元素定位
+  width: 100%;
+  min-height: 250px;       // 根據你的設計稿調整高度
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;        // 關鍵：隱藏模糊後溢出的邊緣
+  border-radius: 20px;     // 如果你的外框有圓角
+
+  // 使用偽元素製作背景
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    // 背景設定
+    background-size: cover;     // 完整覆蓋區域
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    // 模糊效果
+    filter: blur(1px);          // 調整模糊程度
+    transform: scale(1.1);      // 稍微放大以消除邊緣模糊產生的白邊
+    z-index: -1;                // 確保背景在文字下方
+  }
+
+  // 加上半透明遮罩（可選），讓文字更清晰
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(#30180C, 0.5); // 淡淡的白色遮罩
+    z-index: -1;
+  }
+}
+.home-s5-bgimg-1{
+  &::before{
+    background-image: url('/homepage-imgs/10sec5-1.png');
+  }
+}
+.home-s5-bgimg-2{
+  &::before{
+    background-image: url('/homepage-imgs/10sec5-2.png');
+  }
+}
+.home-s5-bgimg-3{
+  &::before{
+    background-image: url('/homepage-imgs/10sec5-3.png');
+  }
+}
+.home-s5-btn-mt{
+  margin-top: 30px;
+  @include rwd-up(md) {
+    margin-top: 50px;
+  }
+}
+//--## 卡片設定//
+.custom-servicard-box-sm{
+  max-width: 65vw;
+  @include rwd-up(md) {
+    max-width: 100%;
+  }
+}
+.custom-workercard-box{
+  max-width: 68vw;
+  @include rwd-up(md) {
+    max-width: 100%;
+  }
+}
+.custom-servicard-deco{
+  cursor: pointer;
+  border-radius: 0.75rem;
+  @include rwd-up(md) {
+    border-radius: 1.5rem; // 24px
+    border: 3px solid transparent;
+    &:hover{
+      border-color:map-get($custom-colors, "primary-300");
+    }
+  }
+  box-shadow: 7.5px 8.65px 11.54px rgba(0, 0, 0, 0.04);
+  @include rwd-up(md) {
+    box-shadow: 13px 15px 20px rgba(0, 0, 0, 0.04);
+  }
+  img{
+   border-radius: 0.75rem 0.75rem 0 0;
+    @include rwd-up(md) {
+      border-radius: 1.5rem 1.5rem 0 0; // 24px
+    }
+  }
+}
+.custom-servicard-icon{
+  svg { 
+  width: 1rem;  // 手機版 (16px)
+  height: 1rem;
+
+  @include rwd-up(md) {
+    width: 1.25rem; // 桌機版 (20px)
+    height: 1.25rem;
+  }
+}
+}
+//--### tag的白漸層遮罩
+.custom-servicard-tasktag-cover{
   position: relative;
   overflow: hidden;
   margin-right: -1.5rem;
   @include rwd-up(lg){
     margin-right: -2.25rem;
   }
-
   &::after {
     content: "";
     position: absolute;
@@ -208,23 +481,41 @@ $section-spacing-sm: $spacer * 4;
     );
   }
 }
+.custom-card-shadow{
+  padding-bottom: 30px;
+  margin-bottom: -30px;
+}
+//--### 案件卡片的輪播設定
+.task-swiper {
+  // 1. 解除裁切，讓右側卡片能畫到螢幕邊緣
+  overflow: visible !important; 
 
-// .card-task-icon{
+  // 2. 避免手機版滑動時造成整個網頁左右晃動 (全域捲軸)
+  // 設定 clip-path：上方/下方/左方留空間給陰影，右方設為 -100vw 讓卡片無限延伸
+  clip-path: inset(-50px -100vw -80px 0px);
 
-// }
-.card-task-shadow {
-  box-shadow: 7.5px 8.65px 11.54px rgba(0, 0, 0, 0.04);
-  @include rwd-up(md){
-    box-shadow: 13px 15px 20px rgba(0, 0, 0, 0.04);
+  .swiper-wrapper {
+    overflow: visible;
   }
 }
-.shadow-container-spacer {
-  padding-top: 20px;
-  padding-bottom: 40px; // 留多一點給 Y 軸偏移
-  padding-left: 20px;
-  padding-right: 20px;
+
+//--### 接案者卡片的輪播設定
+.worker-swiper-container {
+  // 這裡決定了輪播區的溢出表現
+  position: relative;
   
-  // 抵銷 Bootstrap row 的負邊距（選用，看你的排版需求）
-  margin-top: -20px;
-  margin-bottom: -40px;
+  .worker-swiper {
+    overflow: visible !important; // 讓陰影跑出來
+    clip-path: inset(-50px -100vw -80px 0px); // 防止左側溢出但允許右側延伸
+  }
+}
+
+.worker-slide {
+  width: 65vw; // 手機版寬度
+  padding-bottom: 40px; // 給陰影空間
+
+  @include rwd-up(md) {
+    width: 100%; // 桌面版交由 Swiper slidesPerView: 2 計算
+    padding-bottom: 0;
+  }
 }
