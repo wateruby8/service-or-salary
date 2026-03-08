@@ -21,7 +21,7 @@ function TaskCard({}) {
                     <span className="tag-shortterm py-2 px-3 py-lg-3 px-lg-5 fw-bold fs-8 fs-lg-5 rounded-1">短期</span>
                 </div>
                 <div className="d-flex flex-column mb-3 mb-lg-7">
-                    <h3 className="card-title fw-bold h5 fs-lg-4 ls-2 mb-lg-5">網頁切版三頁</h3>
+                    <h3 className="card-title text-line-clamp-1 fw-bold h5 fs-lg-4 ls-2 mb-lg-5">網頁切版三頁sssssssssssssssssssss</h3>
                     <span className="mb-2 d-inline-flex align-items-center gap-2 fs-lg-6">
                         <MapPinIcon  className="text-primary-300"/>
                         遠端
@@ -42,10 +42,12 @@ function TaskCard({}) {
                         <CrosshairIcon  />
                         任務需求
                     </span>
-                    <small className="fs-8 fs-lg-6">要用 Bootstrap，要交作業</small>
+                    <small className="fs-8 fs-lg-6 text-line-clamp-2">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga adipisci veniam soluta sint alias quia officiis nobis, molestias quos nesciunt?
+                    </small>
                 </div>
                 <div className="">
-                    <button type="button" className="btn btn-secondary-500 fw-bold w-100">我想洽談</button>
+                    <button type="button" className="btn btn-secondary-filled fw-bold w-100">我想洽談</button>
                 </div>
                 
             </div>
@@ -63,8 +65,8 @@ function WorkerCard(params) {
             <img src="./homepage-imgs/worker01.png" alt="" 
             className="card-img-top" />
             <div className="card-body pt-5 pb-7 px-7">
-                <p className="h5 fs-md-4 fw-bold ls-2 mb-3">
-                    酥脆攝影剪輯
+                <p className="h5 fs-md-4 fw-bold ls-2 mb-3 text-line-clamp-1">
+                    酥脆攝影剪輯AAQAQAQAQAAAAAAAAAAAA
                 </p>
                 <div className="mb-5">
                     <h6 className="fs-7 fs-md-6 mb-2
@@ -84,11 +86,11 @@ function WorkerCard(params) {
                         <StarIcon className="me-2 me-md-3" weight="bold" />
                         自我介紹
                     </h6>
-                    <span className="fs-8 fs-md-6">
-                        我擅長用運鏡說故事！
+                    <span className="fs-8 fs-md-6 text-line-clamp-2">
+                        我擅長用運鏡說故事！Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente reprehenderit architecto odit quidem? Asperiores ipsam totam eveniet beatae quos? Totam, magni consectetur. Aspernatur, esse debitis consectetur laboriosam architecto enim nostrum.
                     </span>
                 </div>
-                <div className="btn btn-secondary-500 
+                <div className="btn btn-secondary-filled 
                    py-4 py-md-5 w-100">
                     我想洽談
                 </div>
@@ -291,9 +293,9 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
             {/* MD 版：下拉按鈕 */}
             <button
               className="dropdown-toggle
-                btn btn-neutral 
+                btn task-select 
                 d-none d-md-flex align-items-center gap-5 
-                fw-medium text-neutral-900 fs-4 
+                fw-medium fs-4 
                 ps-9 pe-7 border-0"
               type="button"
               data-bs-toggle="dropdown" // 關鍵：Bootstrap JS 會找這個
@@ -358,7 +360,7 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
             </div>
             {/* 行動版：觸發 Offcanvas 按鈕 */}
             <button
-              className="btn btn-neutral 
+              className="btn task-select 
               fw-medium text-neutral-900 fs-7
               d-flex d-md-none align-items-center gap-3 
               ps-3 pe-4 border-0 text-nowrap"
@@ -381,7 +383,7 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
             placeholder="搜尋關鍵字"/>
 
           <button
-            className="btn btn-primary-500 rounded-3 p-3 p-md-6 d-flex justify-content-center align-items-center border-0"
+            className="btn btn-primary-filled rounded-3 p-3 p-md-6 d-flex justify-content-center align-items-center border-0"
             type="submit"
           >
             <MagnifyingGlassIcon size={24} className="text-white" />
@@ -422,7 +424,7 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
                         })}
                     </div>               
                     <button type="button"
-                        className={`btn btn-secondary-500 fw-bold w-100 py-4
+                        className={`btn btn-secondary-filled fw-bold w-100 py-4
                             ${!activeMainId ? 'opacity-70'
                                 : ''
                             }`}
@@ -457,7 +459,7 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
                         ))}
                     </div>
                     <button type="button"
-                        className="btn btn-outline-secondary-500 border-2 
+                        className="btn btn-secondary-outline border-2 
                             w-100 py-4"
                         onClick={handleBackStep}>
                             <span className="d-flex align-items-center justify-content-center fw-bold">
@@ -484,7 +486,7 @@ const IconButton = forwardRef(function IconButton(props, ref) {
       ref={ref} // 關鍵：將 ref 綁定到 button 實體
       disabled={isDisabled}
       onClick={onClick}
-      className={`btn btn-secondary-500 rounded-4 d-flex align-items-center p-3 p-md-4 ${isDisabled ? 'opacity-50' : ''}`}
+      className={`btn btn-secondary-filled rounded-4 d-flex align-items-center p-3 p-md-4 ${isDisabled ? 'opacity-50' : ''}`}
     >
       <Icon size={24} weight="bold" className="text-neutral" />
     </button>
@@ -581,7 +583,7 @@ function HomeSection4Carousel(props) {
                 className="img-fluid mb-7 mb-md-13"
               />
               <p className="fs-md-4 fw-bold mb-9">在理想的時間，得到專業服務。</p>
-              <div className="btn btn-primary-500 text-neutral fw-bold fs-md-4 px-13 py-4 px-md-16 py-md-5">
+              <div className="btn btn-primary-filled text-neutral fw-bold fs-md-4 px-13 py-4 px-md-16 py-md-5">
                 找尋專業助手
               </div>
             </div>
@@ -704,7 +706,7 @@ export default function Home(){
                                 在意想不到的時刻，會有人需要你的專業<br/>
                                 把空閒變成金錢，個人價值翻倍！
                             </p>
-                            <button type="button" className="btn btn-secondary-500 rounded-4 fs-md-4 ls-2 py-4 px-13 py-md-5 px-md-16">開發我的時間</button>
+                            <button type="button" className="btn btn-secondary-filled rounded-4 fs-md-4 ls-2 py-4 px-13 py-md-5 px-md-16">開發我的時間</button>
 
                         </div>
                         </div>
@@ -809,15 +811,15 @@ export default function Home(){
             </div>
             <div className="d-flex justify-content-center home-s5-btn-mt"
              >
-                <div className="btn btn-primary-500
-                    h5 fs-md-4 text-neutral ls-2
+                <div className="btn btn-primary-filled
+                    h5 fs-md-4 ls-2
                     py-4 px-13 py-md-5 px-md-16
                 ">
                     成為時間賣家
                 </div>
             </div>
             <div className="position-absolute bottom-0 start-50 translate-middle-x">
-                <div className="btn btn-secondary-500 py-4 px-6 px-md-7
+                <div className="btn btn-secondary-filled py-4 px-6 px-md-7
                  rounded-0 rounded-top">
                     <span className="h5 ls-1">
                         <CaretUpIcon size={24} weight="bold" className="me-3"/>
