@@ -22,7 +22,7 @@ export default function MemberSidebar() {
         <div className="text-center">
           <div className="member-side__avatar mx-auto mb-5">
             <img
-              src="public/user-photo.png"
+              src="public/user-photo-sm.png"
               alt="avatar"
               className="member-side__avatarImg"
             />
