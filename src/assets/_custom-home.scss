@@ -146,10 +146,13 @@ $section-spacing-sm: $spacer * 4;
     font-size: 24px;
   }
   &:hover,&:focus{
-    color: map-get($custom-colors, "primary-700");
+    color: map-get($custom-colors, "primary-300");
   }
   &.active , &:active{
-    color: map-get($custom-colors, "primary-300");
+    color: map-get($custom-colors, "primary-500");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral-500");
   }
 }
 .custom-home-select-itemB{
@@ -157,7 +160,7 @@ $section-spacing-sm: $spacer * 4;
   display: block;
   width: 100%;
   cursor: pointer;
-  border: none;
+  border: 2px solid transparent;
   outline: none;
   white-space: nowrap;
   transition: all 0.2s ease-in-out;// 加入過渡動畫
@@ -176,12 +179,13 @@ $section-spacing-sm: $spacer * 4;
     letter-spacing: 0.01rem;
   }
   &:hover,&.active,&:focus,&:active{
-    color: map-get($custom-colors, "primary-500");
-    img{
-      filter: blur(2px);          // 調整模糊程度
-      transform: scale(1.01);      // 稍微放大以消除邊緣模糊產生的白邊
-      transition: 0.3s ease-in-out;
-    }
+    border: 2px solid map-get($custom-colors, "primary-300");;
+    // color: map-get($custom-colors, "primary-500");
+    // img{
+    //   filter: blur(2px);          // 調整模糊程度
+    //   transform: scale(1.01);      // 稍微放大以消除邊緣模糊產生的白邊
+    //   transition: 0.3s ease-in-out;
+    // }
   }
 }
 //-------下拉式選單的切線
@@ -517,5 +521,85 @@ $section-spacing-sm: $spacer * 4;
   @include rwd-up(md) {
     width: 100%; // 桌面版交由 Swiper slidesPerView: 2 計算
     padding-bottom: 0;
+  }
+}
+//文字省略
+@mixin line-clamp($lines: 1) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  
+  // 專業細節：補上高度限制，防止在部分舊瀏覽器破版 
+  max-height: calc(1.5em * #{$lines}); 
+}
+.text-line-clamp-1 { @include line-clamp(1); }
+.text-line-clamp-2 { @include line-clamp(2); }
+
+.btn.btn-primary-filled{
+  color: map-get($custom-colors, "neutral");
+  background-color: map-get($custom-colors, "primary-500");
+  transition: all 0.2s ease-in-out;
+  &:hover{
+    background-color: map-get($custom-colors, "primary-700");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "primary-900");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "neutral-500");
+  }
+  
+}
+
+.btn.btn-secondary-filled{
+  color: map-get($custom-colors, "neutral");
+  background-color: map-get($custom-colors, "secondary-500");
+  &:hover{
+    background-color: map-get($custom-colors, "secondary-700");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "secondary-900");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "neutral-500");
+  }
+}
+.btn.btn-secondary-outline{
+  color: map-get($custom-colors, "secondary-500");
+  border: 2px solid map-get($custom-colors, "secondary-500");
+  background-color: map-get($custom-colors, "neutral");
+  &:hover{
+    color: map-get($custom-colors, "secondary-700");
+    border-color: map-get($custom-colors, "secondary-700");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "secondary-900");
+    border-color: map-get($custom-colors, "secondary-900");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral-300");
+    border-color: map-get($custom-colors, "neutral-300");
+
+  }
+}
+
+.btn.task-select{
+  color: map-get($custom-colors, "secondary-900");
+  background-color: map-get($custom-colors, "neutral");
+  &:hover{
+    color: map-get($custom-colors, "primary-300");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "primary-500");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral-500");
   }
 }
