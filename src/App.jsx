@@ -18,7 +18,7 @@ function App() {
             ) : (
               /* 其他頁面：保留 container */
               <div className="container">
-                {/* <Outlet /> */}
+                <Outlet />
               </div>
             )}
       <Footer />      
