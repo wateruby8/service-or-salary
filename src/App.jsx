@@ -13,12 +13,12 @@ function App() {
               /* 首頁：不包 container，讓 Home 內部的 Section 自己控制滿版 */
               <main>
                 <Home />
-                {/* <Outlet /> */}
+                {/*<Outlet />*/}
               </main>
             ) : (
               /* 其他頁面：保留 container */
               <div className="container">
-                {/* <Outlet /> */}
+                <Outlet />
               </div>
             )}
       <Footer />      
