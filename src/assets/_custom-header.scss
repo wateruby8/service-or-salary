@@ -2,10 +2,12 @@
   background-color: transparent;
   transition: background-color 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
   opacity: 1;
+  width: 100%;
 
   &--sticky {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
     z-index: 1030;
   }
 
