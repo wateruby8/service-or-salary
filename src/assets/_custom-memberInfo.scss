@@ -29,14 +29,11 @@
 .member-info__input {
   border-radius: 8px;
   background-color: #ffffff;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #f0f0f0;
+  border: 2px solid #f0f0f0;
 }
 
 .member-info__input:focus {
   border-color: map-get($custom-colors, "primary-300");
-  border-width: 2px;
   box-shadow: none;
 }
 
@@ -103,8 +100,7 @@ textarea.member-info__input + .member-info__counter {
 }
 
 .member-btn {
-  border-width: 2px;
-  border-style: solid;
+  border: 2px solid;
   border-radius: 16px;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -163,7 +159,6 @@ textarea.member-info__input + .member-info__counter {
   border-radius: 999px;
   overflow: hidden;
   background: #fff;
-
   box-shadow:
     0 0 0 4px rgba(255, 255, 255, 1),
     0 0 0 7px rgba(254, 163, 117, 0.35);
@@ -180,10 +175,7 @@ textarea.member-info__input + .member-info__counter {
   --bs-gutter-x: 32px;
 }
 
-.is-error .member-info__input {
-  border-color: map-get($custom-colors, "warning-500");
-}
-
+.is-error .member-info__input,
 .is-error .member-info__input:focus {
   border-color: map-get($custom-colors, "warning-500");
   box-shadow: none;
@@ -212,33 +204,13 @@ textarea.member-info__input + .member-info__counter {
 .member-info__errorHint svg {
   flex: 0 0 auto;
   display: block;
-  transform: translateY(1.5px);
+  transform: translateY(1px);
 }
 
 .member-info__errorHint--textarea {
   top: auto;
   bottom: 10px;
   transform: none;
-}
-
-select.member-info__input:focus {
-  border-color: map-get($custom-colors, "primary-300");
-  border-width: 2px;
-  box-shadow: none;
-  outline: none;
-}
-
-select.member-info__input option:checked {
-  color: map-get($custom-colors, "primary-500");
-}
-
-select.member-info__input option:checked,
-select.member-info__input option:focus {
-  color: map-get($custom-colors, "primary-500");
-}
-
-select.member-info__input {
-  background-color: #fff;
 }
 
 .member-select {
@@ -307,6 +279,7 @@ select.member-info__input {
   padding: 12px 16px;
   cursor: pointer;
   color: map-get($custom-colors, "neutral-900");
+  font-weight: 600;
 }
 
 .member-select__option.is-focused {
@@ -315,4 +288,70 @@ select.member-info__input {
 
 .member-select__option.is-selected {
   color: map-get($custom-colors, "primary-500");
+}
+
+.member-selectBox .memberSelect__control {
+  min-height: 48px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 2px solid #f0f0f0;
+  box-shadow: none;
+}
+
+.member-info__withHint .memberSelect__control {
+  padding-right: 120px;
+}
+
+.member-selectBox .memberSelect__value-container {
+  padding: 6px 10px;
+  gap: 8px;
+}
+
+.member-selectBox .memberSelect__placeholder {
+  color: map-get($custom-colors, "neutral-500");
+}
+
+.member-selectBox .memberSelect__multi-value {
+  background: map-get($custom-colors, "neutral");
+  border-radius: 999px;
+  padding: 2px 6px;
+}
+
+.member-selectBox .memberSelect__multi-value__label {
+  color: map-get($custom-colors, "neutral-900");
+  font-weight: 700;
+  padding: 4px 6px;
+}
+
+.member-selectBox .memberSelect__multi-value__remove {
+  border-radius: 999px;
+  padding: 6px;
+  margin-left: 2px;
+  cursor: pointer;
+}
+
+.member-selectBox .memberSelect__multi-value__remove:hover {
+  background: map-get($custom-colors, "primary-100");
+}
+
+.member-selectBox .memberSelect__indicator-separator {
+  display: none;
+}
+
+.member-selectBox .memberSelect__control:hover:not(:focus-within) {
+  border-color: #f0f0f0 !important;
+}
+
+.member-selectBox .memberSelect__control:focus-within,
+.member-selectBox .memberSelect__control--is-focused {
+  border-color: map-get($custom-colors, "primary-300") !important;
+  box-shadow: none !important;
+}
+
+.is-error .memberSelect__control,
+.is-error .memberSelect__control:hover,
+.is-error .memberSelect__control:focus-within,
+.is-error .memberSelect__control--is-focused {
+  border-color: map-get($custom-colors, "warning-500") !important;
+  box-shadow: none !important;
 }

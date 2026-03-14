@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import CreatableSelect from "react-select/creatable";
 import {
   UploadSimpleIcon,
   WarningCircleIcon,
@@ -11,23 +12,28 @@ export default function MemberInfo() {
     summary: "",
     service: "",
     city: "台北市",
+    skills: ["攝影", "老屋翻修", "台北"],
   });
 
   const [touched, setTouched] = useState({
     nickname: false,
     summary: false,
     service: false,
+    skills: false,
   });
 
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const errors = useMemo(() => {
-    const next = { nickname: "", summary: "", service: "" };
+    const next = { nickname: "", summary: "", service: "", skills: "" };
+
     if (!form.nickname.trim()) next.nickname = "此欄位為必填";
     if (!form.summary.trim()) next.summary = "此欄位為必填";
     if (!form.service.trim()) next.service = "此欄位為必填";
+    if (!form.skills || form.skills.length === 0) next.skills = "此欄位為必填";
+
     return next;
-  }, [form.nickname, form.summary, form.service]);
+  }, [form.nickname, form.summary, form.service, form.skills]);
 
   const showError = (name) =>
     (touched[name] || submitAttempted) && Boolean(errors[name]);
@@ -45,10 +51,12 @@ export default function MemberInfo() {
 
   const handleSave = () => {
     setSubmitAttempted(true);
-    const hasError = Boolean(errors.nickname || errors.summary || errors.service);
+
+    const hasError = Boolean(
+      errors.nickname || errors.summary || errors.service || errors.skills
+    );
     if (hasError) return;
 
-    // TODO: API
     console.log("save payload:", form);
   };
 
@@ -84,11 +92,7 @@ export default function MemberInfo() {
       commitCity(cityOptions[cityFocus]);
       return;
     }
-
-    if (e.key === "Escape") {
-      setCityOpen(false);
-      return;
-    }
+    if (e.key === "Escape") return setCityOpen(false);
 
     if (!cityOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
       setCityOpen(true);
@@ -99,11 +103,45 @@ export default function MemberInfo() {
       e.preventDefault();
       setCityFocus((i) => Math.min(cityOptions.length - 1, i + 1));
     }
-
     if (e.key === "ArrowUp") {
       e.preventDefault();
       setCityFocus((i) => Math.max(0, i - 1));
     }
+  };
+
+  const [skillInput, setSkillInput] = useState("");
+
+  const skillOptions = useMemo(
+    () => [
+      { value: "攝影", label: "攝影" },
+      { value: "老屋翻修", label: "老屋翻修" },
+      { value: "台北", label: "台北" },
+      { value: "剪輯", label: "剪輯" },
+      { value: "設計", label: "設計" },
+    ],
+    []
+  );
+
+  const skillsValue = useMemo(
+    () => form.skills.map((s) => ({ value: s, label: s })),
+    [form.skills]
+  );
+
+  const setSkillsFromSelect = (next) => {
+    const arr = (next || []).map((o) => o.value);
+    setForm((prev) => ({ ...prev, skills: arr }));
+  };
+
+  const addSkill = (input) => {
+    const v = input.trim();
+    if (!v) return false;
+
+    setForm((prev) => {
+      if (prev.skills.includes(v)) return prev;
+      return { ...prev, skills: [...prev.skills, v] };
+    });
+
+    return true;
   };
 
   return (
@@ -156,7 +194,6 @@ export default function MemberInfo() {
                       所在地
                     </label>
 
-                    {/* custom select (no new component) */}
                     <div className="member-select" ref={cityRef}>
                       <button
                         type="button"
@@ -278,16 +315,54 @@ export default function MemberInfo() {
                   <label className="form-label fs-5 fw-medium ls-1 mb-4">
                     技能標籤<span className="text-warning-500">*</span>
                   </label>
-                  <div className="form-control member-info__input d-flex flex-wrap gap-2 align-items-center mb-13">
-                    <span className="member-info__tag">
-                      攝影 <span className="member-info__tagX">×</span>
-                    </span>
-                    <span className="member-info__tag">
-                      老屋翻修 <span className="member-info__tagX">×</span>
-                    </span>
-                    <span className="member-info__tag">
-                      台北 <span className="member-info__tagX">×</span>
-                    </span>
+
+                  <div
+                    className={`position-relative member-info__withHint ${
+                      showError("skills") ? "is-error" : ""
+                    }`}
+                  >
+                    <CreatableSelect
+                      isMulti
+                      isClearable={false}
+                      placeholder="輸入後按 Enter 新增"
+                      options={skillOptions}
+                      menuIsOpen={false}
+                      value={skillsValue}
+                      onChange={(next) => {
+                        setSkillsFromSelect(next);
+                        setTouched((prev) => ({ ...prev, skills: true }));
+                      }}
+                      classNamePrefix="memberSelect"
+                      className="member-selectBox mb-13"
+                      components={{
+                        DropdownIndicator: null,
+                        IndicatorSeparator: null,
+                      }}
+                      inputValue={skillInput}
+                      onInputChange={(val, meta) => {
+                        if (meta.action === "input-change") setSkillInput(val);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key !== "Enter" && e.key !== "Tab") return;
+
+                        const created = addSkill(skillInput);
+                        if (!created) return;
+
+                        e.preventDefault();
+                        setSkillInput("");
+                        setTouched((prev) => ({ ...prev, skills: true }));
+                      }}
+                      onBlur={() =>
+                        setTouched((prev) => ({ ...prev, skills: true }))
+                      }
+                    />
+
+                    {showError("skills") && (
+                      <span className="member-info__errorHint">
+                        <WarningCircleIcon size={20} weight="bold" />
+                        {errors.skills}
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -310,7 +385,7 @@ export default function MemberInfo() {
               <div className="member-info__avatarCard rounded-4 text-center">
                 <div className="member-info__avatarWrap mx-auto mb-9">
                   <img
-                    src="public/user-photo.png"
+                    src="public/memberInfo/user-photo.png"
                     alt="avatar"
                     className="member-info__avatarImg"
                   />
