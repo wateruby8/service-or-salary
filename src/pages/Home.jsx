@@ -6,6 +6,10 @@ import { Swiper,SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { MapPinIcon ,HourglassIcon,CrosshairIcon,MagnifyingGlassIcon,CaretUpIcon,CaretDownIcon,CaretLeftIcon,CaretRightIcon,CreditCardIcon,ChatsIcon,HandHeartIcon,ThumbsUpIcon,SealCheckIcon,StarIcon,HeartIcon } from "@phosphor-icons/react";
 import 'swiper/css';
+import axios from "axios";
+import HomeCarousel from '../components/HomeCarousel';
+import ServiceCard from '../components/ServiceCard';
+import WorkerCard from "../components/WorkerCard";
 
 // 1. 首頁
 function TaskCard({}) {
@@ -56,7 +60,7 @@ function TaskCard({}) {
     </div>
     </>
 }
-function WorkerCard(params) {
+function WorkerCard2(params) {
     return (
         <div className="card
             custom-servicard-deco
@@ -513,74 +517,6 @@ const IconButton = forwardRef(function IconButton(props, ref) {
 
 IconButton.displayName = "IconButton";
 
-function HomeSection2Carousel(props) {
-  const { CaretLeftIcon, CaretRightIcon } = props;
-  const prevRef = React.useRef(null);
-  const nextRef = React.useRef(null);
-  
-  const [isBeginning, setIsBeginning] = React.useState(true);
-  const [isEnd, setIsEnd] = React.useState(false);
-
-  return (
-    <section className="home-s2-bg-start home-s2-bg-end pt-16 pb-15 home-s2-py ">
-      <div className="container mb-12">
-        <div className="d-flex justify-content-between align-items-center">
-          <h2 className="h5 fs-md-1 fw-bold text-neutral-900 ls-2 mb-0 ls-md-4">
-            有誰需要你的時間？
-          </h2>
-          <div className="d-flex gap-6 gap-md-7">
-            {/* 應用 IconButton 元件 */}
-            <IconButton 
-              ref={prevRef} 
-              icon={CaretLeftIcon} 
-              isDisabled={isBeginning} 
-            />
-            <IconButton 
-              ref={nextRef} 
-              icon={CaretRightIcon} 
-              isDisabled={isEnd} 
-            />
-          </div>
-        </div>
-      </div>
-        <div className="overflow-hidden">
-            <div className="container px-0 px-md-3">
-                <Swiper
-                modules={[Navigation]}
-                spaceBetween={24}
-                slidesPerView={'auto'}
-                centeredSlides={false}
-                navigation={{
-                    prevEl: prevRef.current,
-                    nextEl: nextRef.current,
-                }}
-                onBeforeInit={function(swiper) {
-                    // 初始化時手動指定導航元素
-                    swiper.params.navigation.prevEl = prevRef.current;
-                    swiper.params.navigation.nextEl = nextRef.current;
-                }}
-                onSlideChange={function(swiper) {
-                    setIsBeginning(swiper.isBeginning);
-                    setIsEnd(swiper.isEnd);
-                }}
-                breakpoints={{
-                    992: { slidesPerView: 3, slidesPerGroup: 1 }
-                }}
-                className="task-swiper px-3 px-md-0 pb-md-16"
-                >
-                {[...Array(6)].map(function(_, index) {
-                    return (
-                    <SwiperSlide key={index} className="custom-servicard-box-sm">
-                        <TaskCard />
-                    </SwiperSlide>
-                    );
-                })}
-                </Swiper>
-            </div>
-        </div>
-    </section>
-  );
-}
 function HomeSection4Carousel(props) {
   const { CaretLeftIcon, CaretRightIcon } = props;
   const prevRef = useRef(null);
@@ -669,6 +605,8 @@ function HomeSection4Carousel(props) {
 }
 
 export default function Home(){
+    
+
     const sec3Data = [
         {
             title: '金流明確' ,
@@ -700,6 +638,39 @@ export default function Home(){
         navigate('/login', { state: { from: '/postselltime' } });
         }
     };
+    //API串接
+    const apiUrl =import.meta.env.VITE_API_URL;
+    const [taskData,setTaskData ]=useState([]);
+    const [ workerData,setWorkerData ] = useState([]);
+    useEffect(()=>{
+        (
+            async()=>{
+                try {
+                    const res=await axios.get(`${apiUrl}/tasks`);
+                    console.log(res.data);
+                    setTaskData(res.data);
+                    
+                } catch (error) {
+                    
+                }
+            }
+            
+        )()
+        
+    },[])
+    useEffect(()=>{
+        (
+            async()=>{
+                try {
+                    const res=await axios.get(`${apiUrl}/users`);
+                    console.log('worker',res.data);
+                    setWorkerData(res.data);
+                } catch (error) {
+                    
+                }
+            }
+        )()
+    },[])
     return(
         <>
         <section id="homeHero" className="home-hero"
@@ -753,11 +724,15 @@ export default function Home(){
                 </div>
             </div>
         </section>
-
-        <HomeSection2Carousel 
-            CaretLeftIcon={CaretLeftIcon} 
-            CaretRightIcon={CaretRightIcon} 
-            />
+        <section className="home-s2-bg-start home-s2-bg-end pt-16 pb-15 home-s2-py ">
+            <HomeCarousel 
+                data={taskData}
+                Card={ServiceCard}
+                title="有誰需要你的時間？"
+                perViewMd="3"
+                CaretLeftIcon={CaretLeftIcon}
+                CaretRightIcon={CaretRightIcon}/>
+        </section>
         <section className="container py-16 section-py">
             <div className="mb-9 mb-md-16 pb-md-9">
                 <h2 className="h4 fs-md-1 text-neutral-900 fw-bold ls-2 text-center mb-0">在時務所買賣時間的理由</h2>
@@ -791,9 +766,42 @@ export default function Home(){
             </div>
         </section>
 
-        <HomeSection4Carousel 
+        {/* <HomeSection4Carousel 
             CaretLeftIcon={CaretLeftIcon} 
-            CaretRightIcon={CaretRightIcon}/>
+            CaretRightIcon={CaretRightIcon}/> */}
+        <section className="bg-primary-100 sec4-rounded section-py pb-16 mb-3 mb-md-0 overflow-hidden">
+            <div className="container">
+        <div className="row">
+          {/* 左側：標題與裝飾圖 (col-5) */}
+          <div className="col-md-5">
+            <div className="d-flex flex-column justify-content-center align-items-center mx-12 mx-md-0 mb-md-0 sec3-block-start h-100">
+              <img
+                src="./homepage-imgs/09sec4-3.png"
+                alt="裝飾圖"
+                className="img-fluid mb-7 mb-md-13"
+              />
+              <p className="fs-md-4 fw-bold mb-9">在理想的時間，得到專業服務。</p>
+              <Link to="/buylist" 
+                className="btn btn-primary-filled text-neutral fw-bold fs-md-4 px-13 py-4 px-md-16 py-md-5"
+                >
+                找尋專業助手
+              </Link>
+            </div>
+          </div>
+
+          {/* 右側：標題與輪播區 (col-7) */}
+          <div className="col-md-7">
+            <HomeCarousel 
+                data={workerData}
+                Card={WorkerCard}
+                title="受好評的時間賣家"
+                perViewMd="2"
+                CaretLeftIcon={CaretLeftIcon}
+                CaretRightIcon={CaretRightIcon}/>
+          </div>
+        </div>
+      </div>
+        </section>
         <section className="container section-py py-16 position-relative">
             <div className="row">
                 <div className="col-md-4">
