@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Bell, UserCircle } from "phosphor-react";
 
 export default function Header() {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth < 768 : false
@@ -16,10 +19,16 @@ export default function Header() {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", handleResize);
     handleResize();
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
+    if (!isHome) {
+      setIsScrolled(true);
+      return;
+    }
+
     let ticking = false;
 
     const onScroll = () => {
@@ -35,15 +44,20 @@ export default function Header() {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHome]);
 
   return (
-    <header className={`header header--sticky ${isScrolled ? "header--scrolled" : ""}`}>
+    <header
+      className={[
+        "header",
+        isHome ? "header--fixed header--overlay" : "header--static header--solid",
+        isScrolled ? "header--scrolled" : "",
+      ].join(" ")}
+    >
       <div className="container">
         <div className="d-flex align-items-center justify-content-between header-height">
-
-          {/* Logo */}
           <div className="header-item">
             <Link to="/" className="d-inline-block py-4 py-md-3" aria-label="回到首頁">
               <img
@@ -55,12 +69,11 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* 主導覽 */}
           <nav className="header-item">
             <ul className="d-flex list-unstyled mb-0 p-0 header-ls">
               <li>
                 <Link
-                  to="/"
+                  to="/postselltime"
                   className="header-link text-decoration-none p-4 py-md-3 px-md-5 fs-7 fs-md-4 fw-medium fw-md-bold"
                 >
                   賣時間
@@ -68,7 +81,7 @@ export default function Header() {
               </li>
               <li>
                 <Link
-                  to="/"
+                  to="/postbuytime"
                   className="header-link text-decoration-none p-4 py-md-3 px-md-5 fs-7 fs-md-4 fw-medium fw-md-bold"
                 >
                   買時間
@@ -77,11 +90,10 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* Auth */}
           <div className="header-item">
             {!isLoggedIn ? (
               <Link
-                to="/"
+                to="/login"
                 className="header-link text-decoration-none p-4 fs-7 fw-medium fs-md-4 fw-md-bold header-ls"
               >
                 {isMobile ? "登入" : "註冊 / 登入"}
@@ -97,7 +109,7 @@ export default function Header() {
                 </Link>
 
                 <Link
-                  to="/"
+                  to="/member"
                   className="header-link text-decoration-none d-inline-flex align-items-center justify-content-center p-3 header-ls"
                   aria-label="個人頁面"
                 >
