@@ -4,105 +4,15 @@ import { Link,useNavigate } from 'react-router-dom';
 import {Dropdown, Offcanvas} from 'bootstrap';
 import { Swiper,SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { MapPinIcon ,HourglassIcon,CrosshairIcon,MagnifyingGlassIcon,CaretUpIcon,CaretDownIcon,CaretLeftIcon,CaretRightIcon,CreditCardIcon,ChatsIcon,HandHeartIcon,ThumbsUpIcon,SealCheckIcon,StarIcon,HeartIcon } from "@phosphor-icons/react";
+import { HourglassIcon,CrosshairIcon,MagnifyingGlassIcon,CaretUpIcon,CaretDownIcon,CaretLeftIcon,CaretRightIcon,CreditCardIcon,ChatsIcon,HandHeartIcon } from "@phosphor-icons/react";
 import 'swiper/css';
 import axios from "axios";
 import HomeCarousel from '../components/HomeCarousel';
 import ServiceCard from '../components/ServiceCard';
 import WorkerCard from "../components/WorkerCard";
+import WorkerCardSkeleton from "../components/WorkerCardSkeleton";
 
 // 1. 首頁
-function TaskCard({}) {
-    return <>
-    <div className="">
-        <div className="card 
-            custom-servicard-icon
-            custom-servicard-deco
-            ">
-            <div className="card-body p-7 py-lg-13 px-lg-11">
-                <div className="d-flex gap-3 mb-3 mb-lg-5">
-                    <span className="tag-urgent py-2 px-3 py-lg-3 px-lg-5 fw-bold fs-8 fs-lg-5 rounded-1">急件</span>
-                    <span className="tag-longterm py-2 px-3 py-lg-3 px-lg-5 fw-bold fs-8 fs-lg-5 rounded-1">長期</span>  
-                    <span className="tag-shortterm py-2 px-3 py-lg-3 px-lg-5 fw-bold fs-8 fs-lg-5 rounded-1">短期</span>
-                </div>
-                <div className="d-flex flex-column mb-3 mb-lg-7">
-                    <h3 className="card-title text-line-clamp-1 fw-bold h5 fs-lg-4 ls-2 mb-lg-5">網頁切版三頁sssssssssssssssssssss</h3>
-                    <span className="mb-2 d-inline-flex align-items-center gap-2 fs-lg-6">
-                        <MapPinIcon  className="text-primary-300"/>
-                        遠端
-                    </span>
-                    <span className="d-inline-flex align-items-center gap-2 fs-lg-6">
-                        <HourglassIcon  className="text-primary-300"/>
-                        12/01 08:00
-                    </span>
-                </div>
-                <div className="d-flex gap-2 mb-4 mb-lg-5
-                 custom-servicard-tasktag-cover">
-                    <span className="badge bg-primary-100 text-neutral-900 fs-lg-6">網頁設計</span>
-                    <span className="badge bg-primary-100 text-neutral-900 fs-lg-6">上市櫃公司</span>
-                    <span className="badge bg-primary-100 text-neutral-900 fs-lg-6">上市櫃公司招新夥伴中</span>
-                </div>
-                <div className="d-flex flex-column mb-5 mb-lg-7">
-                    <span className="mb-2 mb-lg-3 fw-bold h6 fs-7 fs-lg-5 d-inline-flex align-items-center gap-2">
-                        <CrosshairIcon  />
-                        任務需求
-                    </span>
-                    <small className="fs-8 fs-lg-6 text-line-clamp-2">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fuga adipisci veniam soluta sint alias quia officiis nobis, molestias quos nesciunt?
-                    </small>
-                </div>
-                <div className="">
-                    <button type="button" className="btn btn-secondary-filled fw-bold w-100">我想洽談</button>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-    </>
-}
-function WorkerCard2(params) {
-    return (
-        <div className="card
-            custom-servicard-deco
-            position-relative">
-            <HeartIcon size={40} weight="bold" 
-                className="text-neutral position-absolute end-0 m-5"/>    
-            <img src="./homepage-imgs/worker01.png" alt="" 
-            className="card-img-top" />
-            <div className="card-body pt-5 pb-7 px-7">
-                <p className="h5 fs-md-4 fw-bold ls-2 mb-3 text-line-clamp-1">
-                    酥脆攝影剪輯AAQAQAQAQAAAAAAAAAAAA
-                </p>
-                <div className="mb-5">
-                    <h6 className="fs-7 fs-md-6 mb-2
-                        d-flex align-items-center">
-                        <ThumbsUpIcon className="me-2 me-md-3"/>
-                        4.9
-                    </h6>
-                    <h6 className="fs-7 fs-md-6 mb-0
-                        d-flex align-items-center">
-                        <SealCheckIcon className="me-2 me-md-3" />
-                        已達成：15
-                    </h6>
-                </div>
-                <div className="mb-5 mb-md-7">
-                    <h6 className="fs-7 fs-md-5 mb-2
-                        d-flex align-items-center">
-                        <StarIcon className="me-2 me-md-3" weight="bold" />
-                        自我介紹
-                    </h6>
-                    <span className="fs-8 fs-md-6 text-line-clamp-2">
-                        我擅長用運鏡說故事！Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente reprehenderit architecto odit quidem? Asperiores ipsam totam eveniet beatae quos? Totam, magni consectetur. Aspernatur, esse debitis consectetur laboriosam architecto enim nostrum.
-                    </span>
-                </div>
-                <div className="btn btn-secondary-filled 
-                   py-4 py-md-5 w-100">
-                    我想洽談
-                </div>
-            </div>
-        </div>
-    )
-}
 
 function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
     //搜尋欄
@@ -499,111 +409,6 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
   );
 }
 
-const IconButton = forwardRef(function IconButton(props, ref) {
-  const { icon: Icon, isDisabled = false, onClick } = props;
- 
-  return (
-    <button
-      type="button"
-      ref={ref} // 關鍵：將 ref 綁定到 button 實體
-      disabled={isDisabled}
-      onClick={onClick}
-      className={`btn btn-secondary-filled rounded-4 d-flex align-items-center p-3 p-md-4 ${isDisabled ? 'opacity-50' : ''}`}
-    >
-      <Icon size={24} weight="bold" className="text-neutral" />
-    </button>
-  );
-});
-
-IconButton.displayName = "IconButton";
-
-function HomeSection4Carousel(props) {
-  const { CaretLeftIcon, CaretRightIcon } = props;
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-  const [isBeginning, setIsBeginning] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
-
-  return (
-    <section className="bg-primary-100 sec4-rounded section-py pb-16 mb-3 mb-md-0 overflow-hidden">
-      <div className="container">
-        <div className="row">
-          {/* 左側：標題與裝飾圖 (col-5) */}
-          <div className="col-md-5">
-            <div className="d-flex flex-column justify-content-center align-items-center mx-12 mx-md-0 mb-md-0 sec3-block-start h-100">
-              <img
-                src="./homepage-imgs/09sec4-3.png"
-                alt="裝飾圖"
-                className="img-fluid mb-7 mb-md-13"
-              />
-              <p className="fs-md-4 fw-bold mb-9">在理想的時間，得到專業服務。</p>
-              <Link to="/buylist" 
-                className="btn btn-primary-filled text-neutral fw-bold fs-md-4 px-13 py-4 px-md-16 py-md-5"
-                >
-                找尋專業助手
-              </Link>
-            </div>
-          </div>
-
-          {/* 右側：標題與輪播區 (col-7) */}
-          <div className="col-md-7">
-            <div className="d-flex align-items-center justify-content-between mb-10 mb-md-14 pt-16">
-              <h2 className="h5 fs-md-1 fw-bold text-neutral-900 ls-2 mb-0">
-                受好評的時間賣家
-              </h2>
-              <div className="d-flex gap-6">
-                <IconButton
-                  ref={prevRef}
-                  icon={CaretLeftIcon}
-                  isDisabled={isBeginning}
-                />
-                <IconButton
-                  ref={nextRef}
-                  icon={CaretRightIcon}
-                  isDisabled={isEnd}
-                />
-              </div>
-            </div>
-
-            <div className="worker-swiper-container">
-              <Swiper
-                modules={[Navigation]}
-                spaceBetween={24}
-                slidesPerView={"auto"} // 手機版維持 65vw 效果
-                navigation={{
-                  prevEl: prevRef.current,
-                  nextEl: nextRef.current,
-                }}
-                onBeforeInit={(swiper) => {
-                  swiper.params.navigation.prevEl = prevRef.current;
-                  swiper.params.navigation.nextEl = nextRef.current;
-                }}
-                onSlideChange={(swiper) => {
-                  setIsBeginning(swiper.isBeginning);
-                  setIsEnd(swiper.isEnd);
-                }}
-                breakpoints={{
-                  992: {
-                    slidesPerView: 2, // 在 col-7 容器內顯示 2 張卡片，接近 col-4 寬度
-                    slidesPerGroup: 1,
-                  },
-                }}
-                className="worker-swiper"
-              >
-                {[...Array(6)].map((_, index) => (
-                  <SwiperSlide key={index} className="worker-slide custom-workercard-box">
-                    <WorkerCard />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function Home(){
     
 
@@ -639,38 +444,30 @@ export default function Home(){
         }
     };
     //API串接
+    const [isLoading, setIsLoading] = useState(true);
     const apiUrl =import.meta.env.VITE_API_URL;
     const [taskData,setTaskData ]=useState([]);
     const [ workerData,setWorkerData ] = useState([]);
     useEffect(()=>{
-        (
-            async()=>{
-                try {
-                    const res=await axios.get(`${apiUrl}/tasks`);
-                    console.log(res.data);
-                    setTaskData(res.data);
-                    
-                } catch (error) {
-                    
-                }
+        const fetchData = async()=>{
+            try {
+                setIsLoading(true);
+                const [ taskRes, workerRes ] = await Promise.all([
+                        axios.get(`${apiUrl}/tasks?limit=6`),
+                        axios.get(`${apiUrl}/users?worker.serviceRate_gte=4.5&_limit=6`)
+                    ]);
+                setTaskData(taskRes.data);
+                setWorkerData(workerRes.data);
+            } catch (error) {
+                
+            } finally {
+                // 資料回來後，延遲 1 秒關閉（為了看到漂亮的 Skeleton）
+                setIsLoading(false);
             }
-            
-        )()
-        
-    },[])
-    useEffect(()=>{
-        (
-            async()=>{
-                try {
-                    const res=await axios.get(`${apiUrl}/users`);
-                    console.log('worker',res.data);
-                    setWorkerData(res.data);
-                } catch (error) {
-                    
-                }
-            }
-        )()
-    },[])
+        }
+        fetchData();
+    },[apiUrl])
+
     return(
         <>
         <section id="homeHero" className="home-hero"
@@ -725,13 +522,32 @@ export default function Home(){
             </div>
         </section>
         <section className="home-s2-bg-start home-s2-bg-end pt-16 pb-15 home-s2-py ">
-            <HomeCarousel 
-                data={taskData}
-                Card={ServiceCard}
-                title="有誰需要你的時間？"
-                perViewMd="3"
-                CaretLeftIcon={CaretLeftIcon}
-                CaretRightIcon={CaretRightIcon}/>
+            {
+                isLoading ? (
+                    <div className="container">
+                        <div className="row">
+                            {
+                                Array(3).fill(0).map((_, i) => (
+                                    <div className="col-12 col-md-4" key={i}>
+                                        <WorkerCardSkeleton
+                                            baseColor="#ffe1d2"
+                                            highlightColor="#fff3ed" />
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                ) : (
+                    <HomeCarousel 
+                        data={taskData}
+                        Card={ServiceCard}
+                        title="有誰需要你的時間？"
+                        perViewMd="3"
+                        CaretLeftIcon={CaretLeftIcon}
+                        CaretRightIcon={CaretRightIcon}/>
+                )
+            }
+            
         </section>
         <section className="container py-16 section-py">
             <div className="mb-9 mb-md-16 pb-md-9">
@@ -765,42 +581,54 @@ export default function Home(){
                 }
             </div>
         </section>
-
-        {/* <HomeSection4Carousel 
-            CaretLeftIcon={CaretLeftIcon} 
-            CaretRightIcon={CaretRightIcon}/> */}
         <section className="bg-primary-100 sec4-rounded section-py pb-16 mb-3 mb-md-0 overflow-hidden">
             <div className="container">
-        <div className="row">
-          {/* 左側：標題與裝飾圖 (col-5) */}
-          <div className="col-md-5">
-            <div className="d-flex flex-column justify-content-center align-items-center mx-12 mx-md-0 mb-md-0 sec3-block-start h-100">
-              <img
-                src="./homepage-imgs/09sec4-3.png"
-                alt="裝飾圖"
-                className="img-fluid mb-7 mb-md-13"
-              />
-              <p className="fs-md-4 fw-bold mb-9">在理想的時間，得到專業服務。</p>
-              <Link to="/buylist" 
-                className="btn btn-primary-filled text-neutral fw-bold fs-md-4 px-13 py-4 px-md-16 py-md-5"
-                >
-                找尋專業助手
-              </Link>
-            </div>
-          </div>
+                <div className="row">
+                    {/* 左側：標題與裝飾圖 (col-5) */}
+                    <div className="col-md-5 mb-16 mb-md-0">
+                        <div className="d-flex flex-column justify-content-center align-items-center mx-12 mx-md-0 mb-md-0 sec3-block-start h-100">
+                        <img
+                            src="./homepage-imgs/09sec4-3.png"
+                            alt="裝飾圖"
+                            className="img-fluid mb-7 mb-md-13"
+                        />
+                        <p className="fs-md-4 fw-bold mb-9">在理想的時間，得到專業服務。</p>
+                        <Link to="/buylist" 
+                            className="btn btn-primary-filled text-neutral fw-bold fs-md-4 px-13 py-4 px-md-16 py-md-5"
+                            >
+                            找尋專業助手
+                        </Link>
+                        </div>
+                    </div>
 
-          {/* 右側：標題與輪播區 (col-7) */}
-          <div className="col-md-7">
-            <HomeCarousel 
-                data={workerData}
-                Card={WorkerCard}
-                title="受好評的時間賣家"
-                perViewMd="2"
-                CaretLeftIcon={CaretLeftIcon}
-                CaretRightIcon={CaretRightIcon}/>
-          </div>
-        </div>
-      </div>
+                    {/* 右側：標題與輪播區 (col-7) */}
+                    <div className="col-md-7">
+                        {isLoading ? (
+                            /* 1. 移除多餘大括號，2. 加上 row 容器確保佈局一致 */
+                            <div className="row g-6">
+                                {Array(2).fill(0).map((_, i) => (
+                                    <div className="col-12 col-md-6" key={i}>
+                                        <WorkerCardSkeleton
+                                            baseColor="#ffe1d2"
+                                            highlightColor="#fff3ed"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <HomeCarousel 
+                                data={workerData}
+                                Card={WorkerCard}
+                                title="受好評的時間賣家"
+                                perViewMd={2} // 注意：數值建議直接傳數字
+                                CaretLeftIcon={CaretLeftIcon}
+                                CaretRightIcon={CaretRightIcon}
+                            />
+                        )}
+                        
+                    </div>
+                </div>
+            </div>
         </section>
         <section className="container section-py py-16 position-relative">
             <div className="row">
