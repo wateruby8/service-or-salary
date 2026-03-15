@@ -6,6 +6,9 @@ import {
   WarningCircleIcon,
   CaretDownIcon,
 } from "@phosphor-icons/react";
+import { updateWorkerProfile } from "../api/memberInfoApi";
+
+const CURRENT_USER_ID = import.meta.env.VITE_CURRENT_USER_ID || "u-001";
 
 export default function MemberInfo() {
   const [form, setForm] = useState({
@@ -13,7 +16,7 @@ export default function MemberInfo() {
     summary: "",
     service: "",
     city: "台北市",
-    skills: ["攝影", "設計"],
+    skills: [],
   });
 
   const [touched, setTouched] = useState({
@@ -24,6 +27,8 @@ export default function MemberInfo() {
   });
 
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [apiMessage, setApiMessage] = useState("");
 
   const errors = useMemo(() => {
     const next = { nickname: "", summary: "", service: "", skills: "" };
@@ -50,15 +55,46 @@ export default function MemberInfo() {
     setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setSubmitAttempted(true);
+    setApiMessage("");
 
     const hasError = Boolean(
-      errors.nickname || errors.summary || errors.service || errors.skills,
+      errors.nickname || errors.summary || errors.service || errors.skills
     );
     if (hasError) return;
 
-    console.log("save payload:", form);
+    try {
+      setSaving(true);
+
+      const result = await updateWorkerProfile(CURRENT_USER_ID, form);
+
+      console.log("更新成功：", result);
+      setApiMessage("儲存成功");
+
+      setForm({
+        nickname: "",
+        summary: "",
+        service: "",
+        city: "台北市",
+        skills: [],
+      });
+
+      setTouched({
+        nickname: false,
+        summary: false,
+        service: false,
+        skills: false,
+      });
+
+      setSubmitAttempted(false);
+      setSkillInput("");
+    } catch (error) {
+      console.error("更新失敗：", error);
+      setApiMessage("儲存失敗");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const cityOptions = [
@@ -88,6 +124,7 @@ export default function MemberInfo() {
     "綠島",
     "可遠端",
   ];
+
   const [cityOpen, setCityOpen] = useState(false);
   const [cityFocus, setCityFocus] = useState(0);
   const cityRef = useRef(null);
@@ -115,12 +152,18 @@ export default function MemberInfo() {
   const onCityKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      if (!cityOpen) return setCityOpen(true);
+      if (!cityOpen) {
+        setCityOpen(true);
+        return;
+      }
       commitCity(cityOptions[cityFocus]);
       return;
     }
 
-    if (e.key === "Escape") return setCityOpen(false);
+    if (e.key === "Escape") {
+      setCityOpen(false);
+      return;
+    }
 
     if (!cityOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
       setCityOpen(true);
@@ -148,12 +191,12 @@ export default function MemberInfo() {
       { value: "剪輯", label: "剪輯" },
       { value: "設計", label: "設計" },
     ],
-    [],
+    []
   );
 
   const skillsValue = useMemo(
     () => form.skills.map((s) => ({ value: s, label: s })),
-    [form.skills],
+    [form.skills]
   );
 
   const setSkillsFromSelect = (next) => {
@@ -210,6 +253,16 @@ export default function MemberInfo() {
                     *為必填項目，請完整填寫
                   </p>
                 </div>
+
+                {apiMessage && (
+                  <p
+                    className={`mb-6 fw-medium ${
+                      apiMessage === "儲存成功" ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    {apiMessage}
+                  </p>
+                )}
 
                 <form className="d-grid" onSubmit={(e) => e.preventDefault()}>
                   <div className="row g-0 member-info__row32">
@@ -395,8 +448,9 @@ export default function MemberInfo() {
                         }}
                         inputValue={skillInput}
                         onInputChange={(val, meta) => {
-                          if (meta.action === "input-change")
+                          if (meta.action === "input-change") {
                             setSkillInput(val);
+                          }
                         }}
                         onKeyDown={(e) => {
                           if (e.key !== "Enter" && e.key !== "Tab") return;
@@ -449,8 +503,9 @@ export default function MemberInfo() {
                         type="button"
                         className="btn fw-medium member-btn member-btn--save"
                         onClick={handleSave}
+                        disabled={saving}
                       >
-                        儲存
+                        {saving ? "儲存中..." : "儲存"}
                       </button>
                     </div>
                   </div>
@@ -491,7 +546,7 @@ export default function MemberInfo() {
                     type="button"
                     className="btn py-lg-4 px-lg-13 fw-medium member-btn member-btn--save"
                     onClick={handleSave}
-                  >
+                    >
                     儲存
                   </button>
                 </div>
