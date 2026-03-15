@@ -1,13 +1,33 @@
 // 2-1-1. 接案者的公開資料
 import { useState, useEffect } from 'react';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode, Navigation, Thumbs, Pagination } from 'swiper/modules';
+
+// 樣式引入
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import 'swiper/css/pagination';
+
+
+const weddingImages = [
+    "sellDemo-imgs/America.jpg",
+    "sellDemo-imgs/night.jpg",
+    "sellDemo-imgs/water.png",
+];
+
 export default function SellDemo(){
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [reviews, setReviews] = useState([]);
+
     return(<>
     <div style={{background: "#FBF7F5",}}>
         <div className="container d-flex gap-7" style={{maxWidth: "1296px", margin: "0 auto"}}>
             <div className="d-flex container row align-items-start" style={{ margin: "0 auto"}}>
                 <div className="col-xl-9 order-xl-2">
-                    <nav className="py-5" aria-label="breadcrumb">
+                    <nav className="py-5 ms-4" aria-label="breadcrumb">
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item"><a className="text-decoration-none text-neutral-500 fw-medium" href="#">我要委託</a></li>
                             <li className="breadcrumb-item"><a className="text-decoration-none text-neutral-500 fw-medium" href="#">影音圖像</a></li>
@@ -15,10 +35,27 @@ export default function SellDemo(){
                             <li className="breadcrumb-item active text-neutral-900 fw-medium" aria-current="page">時尚婚紗攝影</li>
                         </ol>
                     </nav>
-                    <div className="d-flex flex-column gap-14">
+                    <div className="d-flex flex-column gap-14 ms-4">
                         <div className="container row d-flex gap-13">
                             <div className="col-xxl-6">
-                                <img src="sellDemo-imgs/night.jpg" className="rounded-4" style={{width: "100%", maxHeight: "100%"}} alt="" />
+                                <Swiper style={{
+                                    '--swiper-navigation-color': '#fff',
+                                    '--swiper-pagination-color': '#fff', borderRadius: '20px', overflow: 'hidden'}}
+                                    spaceBetween={10}
+                                    navigation={true}
+                                    pagination={{ clickable: true }}
+                                    thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                                    modules={[FreeMode, Navigation, Thumbs, Pagination]}
+                                    className="mb-5">
+                                        {weddingImages.map((img, index) => (
+                                            <SwiperSlide key={index}><img src={img} style={{ width: '100%', height: '450px', objectFit: 'cover' }} alt="主圖" /></SwiperSlide>))}
+                                </Swiper>
+                                <Swiper onSwiper={setThumbsSwiper} spaceBetween={10} slidesPerView={3} centeredSlides={true} freeMode={true} watchSlidesProgress={true} modules={[FreeMode, Navigation, Thumbs]} className="thumbs-swiper">
+                                    {weddingImages.map((img, index) => (
+                                        <SwiperSlide key={index} style={{ cursor: 'pointer' }}>
+                                            <img src={img} className="rounded-4 shadow-sm" style={{ width: '100%', height: '120px', objectFit: 'cover', border: '2px solid transparent' }} alt="縮圖" />
+                                            </SwiperSlide>))}
+                                </Swiper>
                             </div>
                             <div className="col-xxl-5 p-9 rounded-4 shadow" style={{background: "white"}}>
                                 <ul className="d-flex list-unstyled gap-3 mb-5">
@@ -94,7 +131,7 @@ export default function SellDemo(){
             </div>
         </div>
         <div className="container col row justify-content-end my-14" style={{ margin: "0 auto"}}>
-            <div className="col-xxl-9">
+            <div className="col-xxl-9 px-7">
                 <h3>評價</h3>
                 <div className="mb-5">
                     <div className="py-7 px-9 rounded-4 mb-5 shadow" style={{background: "white"}}>
@@ -106,7 +143,13 @@ export default function SellDemo(){
                                     <p className="fs-7 mb-0">桃園</p>
                                 </div>
                             </div>
-                        <div className="align-self-center">● ● ● ● ●</div>
+                        <div className="align-self-center d-flex gap-2">
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                        </div>
                     </div>
                     <p>因​為​另​一​半​非常​嚮往​夢幻​的​場景，​所以​我​們​選擇​了​歐式​宮廷​的​拍攝​風格。​很​感謝​團隊​在​過程​中​循序​漸進​的​引導，​雖然​第一​次​面對​這麼​大量​的​鏡頭，​可是​在​拍攝​時​不​會過於​緊繃​和​生澀，​互動​也​相當​自然，​看完成​品​覺得​非常​滿意！​</p>
                     </div>
@@ -120,13 +163,19 @@ export default function SellDemo(){
                                 <p className="fs-7 mb-0">臺北</p>
                             </div>
                         </div>
-                        <div className="align-self-center">● ● ● ● ●</div>
+                        <div className="align-self-center d-flex gap-2">
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                            <img src="sellDemo-imgs/star-fill.svg" alt="星星" />
+                        </div>
                     </div>
                     <p>因​為​另​一​半​非常​嚮往​夢幻​的​場景，​所以​我​們​選擇​了​歐式​宮廷​的​拍攝​風格。​很​感謝​團隊​在​過程​中​循序​漸進​的​引導，​雖然​第一​次​面對​這麼​大量​的​鏡頭，​可是​在​拍攝​時​不​會過於​緊繃​和​生澀，​互動​也​相當​自然，​看完成​品​覺得​非常​滿意！​​</p>
                 </div>
                 <button type="button" style={{width: "160px"}} className="btn btn-outline-secondary-500 fw-bold border-2 d-block mx-auto">顯示更多</button>
             </div>
-            <div className="col-xxl-9 my-15">
+            <div className="col-xxl-9 my-15 px-7">
                 <h3>此用戶還有這些服務...</h3>
                 <ul className="list-unstyled row g-5">
                     <li className="col-lg-4 d-flex flex-column align-items-center">
