@@ -183,7 +183,7 @@ export default function MemberInfo() {
                 <div className="member-info__mobileAvatarCard rounded-4 text-center py-13">
                   <div className="member-info__avatarWrap mx-auto mb-9 mb-lg-6">
                     <img
-                      src="public/memberInfo/user-photo.png"
+                      src={`${import.meta.env.BASE_URL}memberInfo/user-photo.png`}
                       alt="avatar"
                       className="member-info__avatarImg"
                     />
@@ -461,7 +461,7 @@ export default function MemberInfo() {
                 <div className="member-info__avatarCard member-info__desktopAvatarCard rounded-4 text-center">
                   <div className="member-info__avatarWrap mx-auto mb-lg-9">
                     <img
-                      src="public/memberInfo/user-photo.png"
+                      src={`${import.meta.env.BASE_URL}memberInfo/user-photo.png`}
                       alt="avatar"
                       className="member-info__avatarImg"
                     />
