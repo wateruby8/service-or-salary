@@ -1,17 +1,40 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   UserCircleIcon,
   WarningCircleIcon,
   CheckCircleIcon,
 } from "@phosphor-icons/react";
+import { getUserById } from "../api/memberInfoApi";
+
+const CURRENT_USER_ID = import.meta.env.VITE_CURRENT_USER_ID || "u-001";
 
 export default function MemberSidebar({ isMobile }) {
-  const userName = "林友善";
+  const [userName, setUserName] = useState("");
+  const [loadingUser, setLoadingUser] = useState(true);
+
   const isIdentifyVerified = true; // 暫時手動切換
   const identifyIconSize = isMobile ? 18 : 20;
 
   const navClass = ({ isActive }) =>
     `member-side__link member-nav-pad ${isActive ? "is-active" : ""}`;
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoadingUser(true);
+        const user = await getUserById(CURRENT_USER_ID);
+        setUserName(user?.worker?.name || "");
+      } catch (error) {
+        console.error("讀取會員名稱失敗：", error);
+        setUserName("");
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <div className="card border-0 shadow-sm rounded-4 my-13 mx-9">
@@ -36,7 +59,9 @@ export default function MemberSidebar({ isMobile }) {
 
           <div className="d-flex justify-content-center align-items-center gap-2 mb-5">
             <UserCircleIcon size={28} />
-            <span className="fs-4 fw-medium">{userName}</span>
+            <span className="fs-4 fw-medium">
+              {loadingUser ? "載入中..." : userName || "未命名使用者"}
+            </span>
           </div>
 
           <NavLink

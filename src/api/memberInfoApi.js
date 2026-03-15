@@ -4,6 +4,11 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
+export const getUserById = async (userId) => {
+  const response = await api.get(`/users/${userId}`);
+  return response.data;
+};
+
 export const updateWorkerProfile = async (userId, form) => {
   const currentUserRes = await api.get(`/users/${userId}`);
   const currentUser = currentUserRes.data;
