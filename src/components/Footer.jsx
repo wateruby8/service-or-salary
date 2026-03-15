@@ -9,11 +9,11 @@ import {
 } from "@phosphor-icons/react";
 
 const footerNav = [
-  { label: "關於我們", to: "/" },
-  { label: "賣家指南", to: "/" },
-  { label: "買家須知", to: "/" },
-  { label: "服務條款", to: "/" },
-  { label: "隱私權政策", to: "/" },
+  { label: "關於我們", to: "/About" },
+  { label: "賣家指南", to: "/SellGuide" },
+  { label: "買家須知", to: "/BuyGuide" },
+  { label: "服務條款", to: "/ServiceRule" },
+  { label: "隱私權政策", to: "/Policy" },
 ];
 
 export default function Footer() {
