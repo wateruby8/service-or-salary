@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
 import { MapPinIcon ,HourglassIcon,CrosshairIcon } from "@phosphor-icons/react";
 export default function ServiceCard({data}) {
     // 1. 解構資料結構
     const {
+        id,
         serviceTitle,
         serviceLocations,
         serviceTime,
@@ -45,7 +47,6 @@ export default function ServiceCard({data}) {
         const date = new Date(isoString);
         // 格式化為：2026/01/11 08:00 (可根據需求決定是否保留 0)
         return date.toLocaleDateString('zh-TW', {
-            year: 'numeric',
             month: '2-digit',
             day: '2-digit',
             hour: '2-digit',
@@ -85,7 +86,7 @@ const finalTimeText = timeDisplayParts.join('、');
     };
 
     return <>
-    <div className="card h-100 
+    <div className="card 
         custom-servicard-icon
         custom-servicard-deco
         ">
@@ -130,8 +131,8 @@ const finalTimeText = timeDisplayParts.join('、');
                     {serviceDetail}
                 </small>
             </div>
-            <div className="">
-                <button type="button" className="btn btn-secondary-filled fw-bold w-100 mt-auto">我想洽談</button>
+            <div className="mt-auto">
+                <Link to={`/buydemo/${id}`} className="btn btn-secondary-filled fw-bold w-100 mt-auto">我想洽談</Link>
             </div>
             
         </div>

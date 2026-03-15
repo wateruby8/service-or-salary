@@ -38,7 +38,7 @@ const routes = [
     element: <About />,
   },
   {
-    path: "buydemo",
+    path: "buydemo/:id",
     element: <BuyDemo />,
   },
   {
@@ -104,7 +104,7 @@ const routes = [
     element: <ResetPassword />,
   },
   {
-    path: "selldemo",
+    path: "selldemo/:id",
     element: <SellDemo />,
   },
   {

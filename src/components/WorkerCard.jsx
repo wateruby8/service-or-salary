@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import { ThumbsUpIcon,SealCheckIcon,StarIcon,HeartIcon } from "@phosphor-icons/react";
 
-export default function WorkerCard({ data }) {
+export default function WorkerCard({ data,cardClass = "" }) {
     // 1. 解構資料：從 data 中取出 worker 物件，並設定預設值防錯
-    const { worker = {} } = data;
+    const { id,worker = {} } = data;
     const {
         name = "未知人才",
         serviceRate = 0,
@@ -11,26 +12,28 @@ export default function WorkerCard({ data }) {
         profilePictureUrl = "./homepage-imgs/worker-default.png", // 預設圖片
     } = worker;
     return (
-        <div className="card h-100
+        <div className={`card 
             custom-servicard-deco
-            position-relative">
+            position-relative ${cardClass}`}>
             <HeartIcon size={40} weight="bold" 
-                className="text-neutral position-absolute end-0 m-5"/>    
-            <img src="./homepage-imgs/worker01.png" alt="" 
-            className="card-img-top" />
-            <div className="card-body d-flex flex-column pt-5 pb-7 px-7">
+                className="text-neutral position-absolute end-0 m-5 z-3"/> 
+            <div className="card-img-top ratio ratio-4x3 overflow-hidden">
+                <img src={profilePictureUrl} alt={name} 
+                className="object-fit-cover w-100 h-100" />
+            </div>   
+            <div className="card-body d-flex flex-column flex-grow-1 pt-5 pb-7 px-7">
                 <p className="h5 fs-md-4 fw-bold ls-2 mb-3 text-line-clamp-1">
                     {name}
                 </p>
                 <div className="mb-5">
                     <h6 className="fs-7 fs-md-6 mb-2
                         d-flex align-items-center">
-                        <ThumbsUpIcon className="me-2 me-md-3"/>
+                        <ThumbsUpIcon className="me-2 me-md-3 text-primary-300"/>
                         {serviceRate.toFixed(1)}
                     </h6>
                     <h6 className="fs-7 fs-md-6 mb-0
                         d-flex align-items-center">
-                        <SealCheckIcon className="me-2 me-md-3" />
+                        <SealCheckIcon className="me-2 me-md-3 text-primary-300" />
                         已達成：{serviceCases}
                     </h6>
                 </div>
@@ -45,10 +48,10 @@ export default function WorkerCard({ data }) {
                     </span>
                 </div>
                 <div className="mt-auto">
-                    <a href="" className="btn btn-secondary-filled 
+                    <Link to={`/selldemo/${id}`} className="btn btn-secondary-filled 
                    py-4 py-md-5 w-100">
                         我想洽談
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
