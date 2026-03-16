@@ -443,12 +443,20 @@ export default function Home(){
         navigate('/login', { state: { from: '/postselltime' } });
         }
     };
+    //頁尾的"回到網頁上層功能"
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth', // 平滑滾動
+        });
+    };
     //API串接
     const [isLoading, setIsLoading] = useState(true);
     const apiUrl =import.meta.env.VITE_API_URL;
     const [taskData,setTaskData ]=useState([]);
     const [ workerData,setWorkerData ] = useState([]);
     useEffect(()=>{
+        //合併兩個資料的請求
         const fetchData = async()=>{
             try {
                 setIsLoading(true);
@@ -689,13 +697,17 @@ export default function Home(){
                 </button>
             </div>
             <div className="position-absolute bottom-0 start-50 translate-middle-x">
-                <div className="btn btn-secondary-filled py-4 px-6 px-md-7
-                 rounded-0 rounded-top">
+                <button 
+                    type="button" 
+                    className="btn btn-secondary-filled 
+                        py-4 px-6 px-md-7
+                        rounded-0 rounded-top"
+                    onClick={scrollToTop}>
                     <span className="h5 ls-1">
                         <CaretUpIcon size={24} weight="bold" className="me-3"/>
                         TOP
                     </span>
-                </div>
+                </button>
             </div>
         </section>
 
