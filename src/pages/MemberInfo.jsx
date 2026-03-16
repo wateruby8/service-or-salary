@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CreatableSelect from "react-select/creatable";
+import Swal from "sweetalert2";
 import {
   UploadSimpleIcon,
   WarningCircleIcon,
@@ -9,6 +10,33 @@ import {
 import { updateWorkerProfile } from "../api/memberInfoApi";
 
 const CURRENT_USER_ID = import.meta.env.VITE_CURRENT_USER_ID || "u-001";
+
+const swalBase = {
+  confirmButtonText: "返回",
+  buttonsStyling: false,
+  allowOutsideClick: true,
+  allowEscapeKey: true,
+  customClass: {
+    popup: "member-swal",
+    title: "member-swal__title",
+    htmlContainer: "member-swal__text",
+    confirmButton: "member-swal__confirm",
+    icon: "member-swal__icon",
+  },
+};
+
+const showSubmitSuccessAlert = async () => {
+  await Swal.fire({
+    ...swalBase,
+    icon: "success",
+    title: "提交成功",
+    text: "資料已成功送出。",
+    customClass: {
+      ...swalBase.customClass,
+      popup: "member-swal member-swal--success",
+    },
+  });
+};
 
 export default function MemberInfo() {
   const [form, setForm] = useState({
@@ -28,74 +56,11 @@ export default function MemberInfo() {
 
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [apiMessage, setApiMessage] = useState("");
+  const [cityOpen, setCityOpen] = useState(false);
+  const [cityFocus, setCityFocus] = useState(0);
+  const [skillInput, setSkillInput] = useState("");
 
-  const errors = useMemo(() => {
-    const next = { nickname: "", summary: "", service: "", skills: "" };
-
-    if (!form.nickname.trim()) next.nickname = "此欄位為必填";
-    if (!form.summary.trim()) next.summary = "此欄位為必填";
-    if (!form.service.trim()) next.service = "此欄位為必填";
-    if (!form.skills || form.skills.length === 0) next.skills = "此欄位為必填";
-
-    return next;
-  }, [form.nickname, form.summary, form.service, form.skills]);
-
-  const showError = (name) =>
-    (touched[name] || submitAttempted) && Boolean(errors[name]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    if (!name) return;
-    setTouched((prev) => ({ ...prev, [name]: true }));
-  };
-
-  const handleSave = async () => {
-    setSubmitAttempted(true);
-    setApiMessage("");
-
-    const hasError = Boolean(
-      errors.nickname || errors.summary || errors.service || errors.skills
-    );
-    if (hasError) return;
-
-    try {
-      setSaving(true);
-
-      const result = await updateWorkerProfile(CURRENT_USER_ID, form);
-
-      console.log("更新成功：", result);
-      setApiMessage("儲存成功");
-
-      setForm({
-        nickname: "",
-        summary: "",
-        service: "",
-        city: "台北市",
-        skills: [],
-      });
-
-      setTouched({
-        nickname: false,
-        summary: false,
-        service: false,
-        skills: false,
-      });
-
-      setSubmitAttempted(false);
-      setSkillInput("");
-    } catch (error) {
-      console.error("更新失敗：", error);
-      setApiMessage("儲存失敗");
-    } finally {
-      setSaving(false);
-    }
-  };
+  const cityRef = useRef(null);
 
   const cityOptions = [
     "台北市",
@@ -125,15 +90,127 @@ export default function MemberInfo() {
     "可遠端",
   ];
 
-  const [cityOpen, setCityOpen] = useState(false);
-  const [cityFocus, setCityFocus] = useState(0);
-  const cityRef = useRef(null);
+  const skillOptions = useMemo(
+    () => [
+      { value: "攝影", label: "攝影" },
+      { value: "老屋翻修", label: "老屋翻修" },
+      { value: "台北", label: "台北" },
+      { value: "剪輯", label: "剪輯" },
+      { value: "設計", label: "設計" },
+    ],
+    []
+  );
+
+  const errors = useMemo(() => {
+    const next = { nickname: "", summary: "", service: "", skills: "" };
+
+    if (!form.nickname.trim()) next.nickname = "此欄位為必填";
+    if (!form.summary.trim()) next.summary = "此欄位為必填";
+    if (!form.service.trim()) next.service = "此欄位為必填";
+    if (!form.skills || form.skills.length === 0) next.skills = "此欄位為必填";
+
+    return next;
+  }, [form.nickname, form.summary, form.service, form.skills]);
+
+  const skillsValue = useMemo(
+    () => form.skills.map((s) => ({ value: s, label: s })),
+    [form.skills]
+  );
+
+  const showError = (name) =>
+    (touched[name] || submitAttempted) && Boolean(errors[name]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    if (!name) return;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+  };
+
+  const showSubmitErrorAlert = async () => {
+    await Swal.fire({
+      ...swalBase,
+      icon: "error",
+      title: "提交失敗",
+      text: "請確認資料是否填寫完整。",
+    });
+  };
+
+  const showSubmitSuccessAlert = async () => {
+    await Swal.fire({
+      ...swalBase,
+      icon: "success",
+      title: "儲存成功",
+      text: "個人資料已成功更新。",
+    });
+  };
+
+  const showApiErrorAlert = async () => {
+    await Swal.fire({
+      ...swalBase,
+      icon: "error",
+      title: "儲存失敗",
+      text: "目前無法更新資料，請稍後再試。",
+    });
+  };
+
+  const handleSave = async () => {
+    if (saving) return;
+
+    setSubmitAttempted(true);
+
+    const hasError = Boolean(
+      errors.nickname || errors.summary || errors.service || errors.skills
+    );
+
+    if (hasError) {
+      await showSubmitErrorAlert();
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      const result = await updateWorkerProfile(CURRENT_USER_ID, form);
+      console.log("更新成功：", result);
+
+      await showSubmitSuccessAlert();
+
+      setForm({
+        nickname: "",
+        summary: "",
+        service: "",
+        city: "台北市",
+        skills: [],
+      });
+
+      setTouched({
+        nickname: false,
+        summary: false,
+        service: false,
+        skills: false,
+      });
+
+      setSubmitAttempted(false);
+      setSkillInput("");
+    } catch (error) {
+      console.error("更新失敗：", error);
+      await showApiErrorAlert();
+    } finally {
+      setSaving(false);
+    }
+  };
 
   useEffect(() => {
     const onDocDown = (e) => {
       if (!cityRef.current) return;
       if (!cityRef.current.contains(e.target)) setCityOpen(false);
     };
+
     document.addEventListener("mousedown", onDocDown);
     return () => document.removeEventListener("mousedown", onDocDown);
   }, []);
@@ -181,24 +258,6 @@ export default function MemberInfo() {
     }
   };
 
-  const [skillInput, setSkillInput] = useState("");
-
-  const skillOptions = useMemo(
-    () => [
-      { value: "攝影", label: "攝影" },
-      { value: "老屋翻修", label: "老屋翻修" },
-      { value: "台北", label: "台北" },
-      { value: "剪輯", label: "剪輯" },
-      { value: "設計", label: "設計" },
-    ],
-    []
-  );
-
-  const skillsValue = useMemo(
-    () => form.skills.map((s) => ({ value: s, label: s })),
-    [form.skills]
-  );
-
   const setSkillsFromSelect = (next) => {
     const arr = (next || []).map((o) => o.value);
     setForm((prev) => ({ ...prev, skills: arr }));
@@ -208,12 +267,15 @@ export default function MemberInfo() {
     const v = input.trim();
     if (!v) return false;
 
+    let created = false;
+
     setForm((prev) => {
       if (prev.skills.includes(v)) return prev;
+      created = true;
       return { ...prev, skills: [...prev.skills, v] };
     });
 
-    return true;
+    return created;
   };
 
   return (
@@ -253,16 +315,6 @@ export default function MemberInfo() {
                     *為必填項目，請完整填寫
                   </p>
                 </div>
-
-                {apiMessage && (
-                  <p
-                    className={`mb-6 fw-medium ${
-                      apiMessage === "儲存成功" ? "text-success" : "text-danger"
-                    }`}
-                  >
-                    {apiMessage}
-                  </p>
-                )}
 
                 <form className="d-grid" onSubmit={(e) => e.preventDefault()}>
                   <div className="row g-0 member-info__row32">
@@ -503,9 +555,8 @@ export default function MemberInfo() {
                         type="button"
                         className="btn fw-medium member-btn member-btn--save"
                         onClick={handleSave}
-                        disabled={saving}
                       >
-                        {saving ? "儲存中..." : "儲存"}
+                        儲存
                       </button>
                     </div>
                   </div>
@@ -546,7 +597,7 @@ export default function MemberInfo() {
                     type="button"
                     className="btn py-lg-4 px-lg-13 fw-medium member-btn member-btn--save"
                     onClick={handleSave}
-                    >
+                  >
                     儲存
                   </button>
                 </div>
