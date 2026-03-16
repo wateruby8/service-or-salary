@@ -25,19 +25,6 @@ const swalBase = {
   },
 };
 
-const showSubmitSuccessAlert = async () => {
-  await Swal.fire({
-    ...swalBase,
-    icon: "success",
-    title: "提交成功",
-    text: "資料已成功送出。",
-    customClass: {
-      ...swalBase.customClass,
-      popup: "member-swal member-swal--success",
-    },
-  });
-};
-
 export default function MemberInfo() {
   const [form, setForm] = useState({
     nickname: "",
@@ -58,7 +45,6 @@ export default function MemberInfo() {
   const [saving, setSaving] = useState(false);
   const [cityOpen, setCityOpen] = useState(false);
   const [cityFocus, setCityFocus] = useState(0);
-  const [skillInput, setSkillInput] = useState("");
 
   const cityRef = useRef(null);
 
@@ -89,17 +75,6 @@ export default function MemberInfo() {
     "綠島",
     "可遠端",
   ];
-
-  const skillOptions = useMemo(
-    () => [
-      { value: "攝影", label: "攝影" },
-      { value: "老屋翻修", label: "老屋翻修" },
-      { value: "台北", label: "台北" },
-      { value: "剪輯", label: "剪輯" },
-      { value: "設計", label: "設計" },
-    ],
-    []
-  );
 
   const errors = useMemo(() => {
     const next = { nickname: "", summary: "", service: "", skills: "" };
@@ -146,6 +121,10 @@ export default function MemberInfo() {
       icon: "success",
       title: "儲存成功",
       text: "個人資料已成功更新。",
+      customClass: {
+        ...swalBase.customClass,
+        popup: "member-swal member-swal--success",
+      },
     });
   };
 
@@ -196,7 +175,6 @@ export default function MemberInfo() {
       });
 
       setSubmitAttempted(false);
-      setSkillInput("");
     } catch (error) {
       console.error("更新失敗：", error);
       await showApiErrorAlert();
@@ -485,11 +463,15 @@ export default function MemberInfo() {
                         isMulti
                         isClearable={false}
                         placeholder="輸入後按 Enter 新增"
-                        options={skillOptions}
-                        menuIsOpen={false}
                         value={skillsValue}
                         onChange={(next) => {
                           setSkillsFromSelect(next);
+                          setTouched((prev) => ({ ...prev, skills: true }));
+                        }}
+                        onCreateOption={(inputValue) => {
+                          const created = addSkill(inputValue);
+                          if (!created) return;
+
                           setTouched((prev) => ({ ...prev, skills: true }));
                         }}
                         classNamePrefix="memberSelect"
@@ -497,22 +479,6 @@ export default function MemberInfo() {
                         components={{
                           DropdownIndicator: null,
                           IndicatorSeparator: null,
-                        }}
-                        inputValue={skillInput}
-                        onInputChange={(val, meta) => {
-                          if (meta.action === "input-change") {
-                            setSkillInput(val);
-                          }
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key !== "Enter" && e.key !== "Tab") return;
-
-                          const created = addSkill(skillInput);
-                          if (!created) return;
-
-                          e.preventDefault();
-                          setSkillInput("");
-                          setTouched((prev) => ({ ...prev, skills: true }));
                         }}
                         onBlur={() =>
                           setTouched((prev) => ({ ...prev, skills: true }))
