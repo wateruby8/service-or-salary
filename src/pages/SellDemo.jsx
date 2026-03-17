@@ -1,6 +1,5 @@
 // 2-1-1. 接案者的公開資料
 import { useState, useEffect } from 'react';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs, Pagination } from 'swiper/modules';
 
