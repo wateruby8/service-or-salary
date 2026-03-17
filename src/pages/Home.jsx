@@ -1,3 +1,4 @@
+// 1. 首頁
 import React,{ useRef,useState,forwardRef,useEffect } from "react";
 import { Link,useNavigate } from 'react-router-dom';
 // import * as bootstrap from 'bootstrap';
@@ -12,23 +13,9 @@ import ServiceCard from '../components/ServiceCard';
 import WorkerCard from "../components/WorkerCard";
 import WorkerCardSkeleton from "../components/WorkerCardSkeleton";
 
-// 1. 首頁
-
 function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
-    //搜尋欄
-    const navigate = useNavigate();
-    const [keyword, setKeyword] = useState(""); // 管理輸入框內容
-    const handleSearchSubmit = (e) => {
-        e.preventDefault(); 
-            // 導向 selllist，並透過 state 或 search 帶入資料
-            // 這裡示範用 search query string 的方式 (例如: /selllist?cat=清潔&q=客廳)
-        const params = new URLSearchParams();
-        if (category) params.append("cat", category);
-        if (keyword) params.append("q", keyword);
-
-        navigate(`/selllist?${params.toString()}`);
-    };
-//----- 分類功能 -----
+    
+    //----- 分類功能 -----
     const categories = [
     {
         "id":"cat001",
@@ -150,33 +137,33 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
         "imgSm":"./searchMenu-imgs/sm/sm11.png"
     },
     ]
-  // 下拉式選單的ref
+    // 下拉式選單的ref
     const dropdownRef = useRef(null); // 指向下拉選單的按鈕或容器
     const bsDropdown = useRef(null); // 儲存 Bootstrap 實例
-  // 建立一個 Ref 來存取 Offcanvas 的 HTML 元素
+    // 建立一個 Ref 來存取 Offcanvas 的 HTML 元素
     const offcanvasRef = useRef(null);
     const bsOffcanvas = useRef(null);
 
-  useEffect(() => {
+    useEffect(() => {
 
-    // 初始化 Bootstrap Dropdown & Offcanvas 實例
-    if (dropdownRef.current) {
-      bsDropdown.current = new Dropdown(dropdownRef.current);
-    }
-    if (offcanvasRef.current) {
-      bsOffcanvas.current = new Offcanvas(offcanvasRef.current);
-    }
-
-    // 清理機制：元件卸載時銷毀實例，避免記憶體洩漏
-    return () => {
-      if (bsDropdown.current) {
-        bsDropdown.current.dispose();
-      }
-      if (bsOffcanvas.current) {
-        bsOffcanvas.current.dispose();
+        // 初始化 Bootstrap Dropdown & Offcanvas 實例
+        if (dropdownRef.current) {
+        bsDropdown.current = new Dropdown(dropdownRef.current);
         }
-    };
-  }, []);
+        if (offcanvasRef.current) {
+        bsOffcanvas.current = new Offcanvas(offcanvasRef.current);
+        }
+
+        // 清理機制：元件卸載時銷毀實例，避免記憶體洩漏
+        return () => {
+        if (bsDropdown.current) {
+            bsDropdown.current.dispose();
+        }
+        if (bsOffcanvas.current) {
+            bsOffcanvas.current.dispose();
+            }
+        };
+    }, []);
 
     const [category, setCategory] = useState(null);
     const [activeMainId, setActiveMainId] = useState(categories[0].id);// 暫存選中的主類別
@@ -212,7 +199,27 @@ function Search({ CaretDownIcon,MagnifyingGlassIcon }) {
             setActiveMainId(categories[0].id);
         }, 300);
     };
+    // --- 搜尋欄功能 ---
+    const navigate = useNavigate();
+    const [keyword, setKeyword] = useState(""); // 管理輸入框內容
+    const handleSearchSubmit = (e) => {
+        e.preventDefault(); 
+            // 導向 selllist，並透過 state 或 search 帶入資料
+            // 這裡示範用 search query string 的方式 (例如: /selllist?cat=清潔&q=客廳)
+        const params = new URLSearchParams();
 
+        // 如果有選分類（這裡建議傳 id，比較精確）
+        //只有當 category 有值（代表使用者真的選了一個分類）時，才帶入分類 ID
+        if (category && activeMainId) {
+            params.append("categoryId", activeMainId);
+            // 如果你想精確搜尋副類別標題
+            params.append("subCategory", category); 
+        }
+        // 如果有輸入關鍵字，使用 json-server 的全文檢索 q
+        if (keyword) params.append("q", keyword);
+
+        navigate(`/selllist?${params.toString()}`);
+    };
   return (
     <div className="px-11 px-md-0">
       <form className="search-bar-container bg-neutral rounded-3 p-2 p-md-5"
