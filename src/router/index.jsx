@@ -1,3 +1,6 @@
+import TokenReady from "../components/TokenReady";
+import TokenCheck from "../components/TokenCheck";
+
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import About from "../pages/About";
@@ -31,14 +34,14 @@ const routes = [
   },
   {
     path: "login",
-    element: <Login />,
+    element: <TokenReady><Login /></TokenReady>,
   },
   {
     path: "about",
     element: <About />,
   },
   {
-    path: "buydemo",
+    path: "buydemo/:id",
     element: <BuyDemo />,
   },
   {
@@ -97,14 +100,14 @@ const routes = [
   },
   {
     path: "register",
-    element: <Register />,
+    element: <TokenReady><Register /></TokenReady>,
   },
   {
     path: "resetpassword",
     element: <ResetPassword />,
   },
   {
-    path: "selldemo",
+    path: "selldemo/:id",
     element: <SellDemo />,
   },
   {

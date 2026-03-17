@@ -1,0 +1,20 @@
+.custom-input-border {
+  transition: all 0.3s ease; /* 讓發光效果更平滑 */
+  border: 1px solid transparent; /* 預留邊框位置防止抖動 */
+  border: 1px solid map-get($custom-colors, "neutral-500");
+  &:focus-within {
+    border-color: map-get($custom-colors, "primary-300");   /* 舉例：邊框變色 */
+    box-shadow: 0 0 0 2px #fea37585; /* 舉例：外發光效果 */
+    @include rwd-up(md){
+      box-shadow: 0 0 0 3px #fea37585;
+    }
+  }
+}
+.login-bg{
+    background-image: url(/login-img.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    // width: 100%;
+    min-height: 100%;
+}

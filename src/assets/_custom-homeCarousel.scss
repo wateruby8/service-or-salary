@@ -1,0 +1,21 @@
+//--### 案件卡片的輪播設定
+.task-swiper {
+  // 1. 解除裁切，讓右側卡片能畫到螢幕邊緣
+  overflow: visible !important; 
+
+  // 2. 避免手機版滑動時造成整個網頁左右晃動 (全域捲軸)
+  // 設定 clip-path：上方/下方/左方留空間給陰影，右方設為 -100vw 讓卡片無限延伸
+  clip-path: inset(-50px -100vw -80px 0px);
+
+  .swiper-wrapper {
+    overflow: visible;
+  }
+}
+.task-swiper .swiper-slide {
+  display: flex;
+  height: auto; /* 確保 Slide 根據該排最高者對齊 */
+}
+.task-swiper .swiper-slide > div, 
+.task-swiper .swiper-slide > .card {
+  width: 100%;
+}
