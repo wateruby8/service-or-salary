@@ -1,12 +1,32 @@
 .header {
   background-color: transparent;
-  transition: background-color 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    opacity 0.25s ease,
+    box-shadow 0.25s ease;
   opacity: 1;
+  width: 100%;
 
-  &--sticky {
-    position: sticky;
+  &--fixed {
+    position: fixed;
     top: 0;
+    left: 0;
     z-index: 1030;
+  }
+
+  &--static {
+    position: relative;
+  }
+
+  &--overlay {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  &--solid {
+    background-color: map-get($custom-colors, "neutral-900");
+    opacity: 0.9;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   }
 
   &--scrolled {

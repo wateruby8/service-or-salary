@@ -5,6 +5,7 @@ import { createHashRouter, RouterProvider  } from 'react-router-dom'
 import App from './App.jsx'
 import routes from './router/index.jsx';
 import './assets/all.scss'
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const router = createHashRouter([
   {

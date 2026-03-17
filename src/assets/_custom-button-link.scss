@@ -1,0 +1,65 @@
+.btn.btn-primary-filled{
+  color: map-get($custom-colors, "neutral");
+  background-color: map-get($custom-colors, "primary-500");
+  transition: all 0.2s ease-in-out;
+  &:hover{
+    background-color: map-get($custom-colors, "primary-700");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "primary-900");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "neutral-500");
+  }
+  
+}
+
+.btn.btn-secondary-filled{
+  color: map-get($custom-colors, "neutral");
+  background-color: map-get($custom-colors, "secondary-500");
+  &:hover{
+    background-color: map-get($custom-colors, "secondary-700");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "secondary-900");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral");
+    background-color: map-get($custom-colors, "neutral-500");
+  }
+}
+.btn.btn-secondary-outline{
+  color: map-get($custom-colors, "secondary-500");
+  border: 2px solid map-get($custom-colors, "secondary-500");
+  background-color: map-get($custom-colors, "neutral");
+  &:hover{
+    color: map-get($custom-colors, "secondary-700");
+    border-color: map-get($custom-colors, "secondary-700");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "secondary-900");
+    border-color: map-get($custom-colors, "secondary-900");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral-300");
+    border-color: map-get($custom-colors, "neutral-300");
+
+  }
+}
+
+.btn.task-select{
+  color: map-get($custom-colors, "secondary-900");
+  background-color: map-get($custom-colors, "neutral");
+  &:hover{
+    color: map-get($custom-colors, "primary-300");
+  }
+  &:active, &.active{
+    color: map-get($custom-colors, "primary-500");
+  }
+  &:disabled, &.disabled{
+    color: map-get($custom-colors, "neutral-500");
+  }
+}
