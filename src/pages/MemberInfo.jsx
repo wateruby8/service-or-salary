@@ -1,11 +1,29 @@
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CreatableSelect from "react-select/creatable";
+import Swal from "sweetalert2";
 import {
   UploadSimpleIcon,
   WarningCircleIcon,
   CaretDownIcon,
 } from "@phosphor-icons/react";
+import { updateWorkerProfile } from "../api/memberInfoApi";
+
+const CURRENT_USER_ID = import.meta.env.VITE_CURRENT_USER_ID || "u-001";
+
+const swalBase = {
+  confirmButtonText: "返回",
+  buttonsStyling: false,
+  allowOutsideClick: true,
+  allowEscapeKey: true,
+  customClass: {
+    popup: "member-swal",
+    title: "member-swal__title",
+    htmlContainer: "member-swal__text",
+    confirmButton: "member-swal__confirm",
+    icon: "member-swal__icon",
+  },
+};
 
 export default function MemberInfo() {
   const [form, setForm] = useState({
@@ -13,7 +31,7 @@ export default function MemberInfo() {
     summary: "",
     service: "",
     city: "台北市",
-    skills: ["攝影", "設計"],
+    skills: [],
   });
 
   const [touched, setTouched] = useState({
@@ -24,42 +42,11 @@ export default function MemberInfo() {
   });
 
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [cityOpen, setCityOpen] = useState(false);
+  const [cityFocus, setCityFocus] = useState(0);
 
-  const errors = useMemo(() => {
-    const next = { nickname: "", summary: "", service: "", skills: "" };
-
-    if (!form.nickname.trim()) next.nickname = "此欄位為必填";
-    if (!form.summary.trim()) next.summary = "此欄位為必填";
-    if (!form.service.trim()) next.service = "此欄位為必填";
-    if (!form.skills || form.skills.length === 0) next.skills = "此欄位為必填";
-
-    return next;
-  }, [form.nickname, form.summary, form.service, form.skills]);
-
-  const showError = (name) =>
-    (touched[name] || submitAttempted) && Boolean(errors[name]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    if (!name) return;
-    setTouched((prev) => ({ ...prev, [name]: true }));
-  };
-
-  const handleSave = () => {
-    setSubmitAttempted(true);
-
-    const hasError = Boolean(
-      errors.nickname || errors.summary || errors.service || errors.skills,
-    );
-    if (hasError) return;
-
-    console.log("save payload:", form);
-  };
+  const cityRef = useRef(null);
 
   const cityOptions = [
     "台北市",
@@ -88,15 +75,120 @@ export default function MemberInfo() {
     "綠島",
     "可遠端",
   ];
-  const [cityOpen, setCityOpen] = useState(false);
-  const [cityFocus, setCityFocus] = useState(0);
-  const cityRef = useRef(null);
+
+  const errors = useMemo(() => {
+    const next = { nickname: "", summary: "", service: "", skills: "" };
+
+    if (!form.nickname.trim()) next.nickname = "此欄位為必填";
+    if (!form.summary.trim()) next.summary = "此欄位為必填";
+    if (!form.service.trim()) next.service = "此欄位為必填";
+    if (!form.skills || form.skills.length === 0) next.skills = "此欄位為必填";
+
+    return next;
+  }, [form.nickname, form.summary, form.service, form.skills]);
+
+  const skillsValue = useMemo(
+    () => form.skills.map((s) => ({ value: s, label: s })),
+    [form.skills]
+  );
+
+  const showError = (name) =>
+    (touched[name] || submitAttempted) && Boolean(errors[name]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    if (!name) return;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+  };
+
+  const showSubmitErrorAlert = async () => {
+    await Swal.fire({
+      ...swalBase,
+      icon: "error",
+      title: "提交失敗",
+      text: "請確認資料是否填寫完整。",
+    });
+  };
+
+  const showSubmitSuccessAlert = async () => {
+    await Swal.fire({
+      ...swalBase,
+      icon: "success",
+      title: "儲存成功",
+      text: "個人資料已成功更新。",
+      customClass: {
+        ...swalBase.customClass,
+        popup: "member-swal member-swal--success",
+      },
+    });
+  };
+
+  const showApiErrorAlert = async () => {
+    await Swal.fire({
+      ...swalBase,
+      icon: "error",
+      title: "儲存失敗",
+      text: "目前無法更新資料，請稍後再試。",
+    });
+  };
+
+  const handleSave = async () => {
+    if (saving) return;
+
+    setSubmitAttempted(true);
+
+    const hasError = Boolean(
+      errors.nickname || errors.summary || errors.service || errors.skills
+    );
+
+    if (hasError) {
+      await showSubmitErrorAlert();
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      const result = await updateWorkerProfile(CURRENT_USER_ID, form);
+      console.log("更新成功：", result);
+
+      await showSubmitSuccessAlert();
+
+      setForm({
+        nickname: "",
+        summary: "",
+        service: "",
+        city: "台北市",
+        skills: [],
+      });
+
+      setTouched({
+        nickname: false,
+        summary: false,
+        service: false,
+        skills: false,
+      });
+
+      setSubmitAttempted(false);
+    } catch (error) {
+      console.error("更新失敗：", error);
+      await showApiErrorAlert();
+    } finally {
+      setSaving(false);
+    }
+  };
 
   useEffect(() => {
     const onDocDown = (e) => {
       if (!cityRef.current) return;
       if (!cityRef.current.contains(e.target)) setCityOpen(false);
     };
+
     document.addEventListener("mousedown", onDocDown);
     return () => document.removeEventListener("mousedown", onDocDown);
   }, []);
@@ -115,12 +207,18 @@ export default function MemberInfo() {
   const onCityKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      if (!cityOpen) return setCityOpen(true);
+      if (!cityOpen) {
+        setCityOpen(true);
+        return;
+      }
       commitCity(cityOptions[cityFocus]);
       return;
     }
 
-    if (e.key === "Escape") return setCityOpen(false);
+    if (e.key === "Escape") {
+      setCityOpen(false);
+      return;
+    }
 
     if (!cityOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
       setCityOpen(true);
@@ -138,24 +236,6 @@ export default function MemberInfo() {
     }
   };
 
-  const [skillInput, setSkillInput] = useState("");
-
-  const skillOptions = useMemo(
-    () => [
-      { value: "攝影", label: "攝影" },
-      { value: "老屋翻修", label: "老屋翻修" },
-      { value: "台北", label: "台北" },
-      { value: "剪輯", label: "剪輯" },
-      { value: "設計", label: "設計" },
-    ],
-    [],
-  );
-
-  const skillsValue = useMemo(
-    () => form.skills.map((s) => ({ value: s, label: s })),
-    [form.skills],
-  );
-
   const setSkillsFromSelect = (next) => {
     const arr = (next || []).map((o) => o.value);
     setForm((prev) => ({ ...prev, skills: arr }));
@@ -165,12 +245,15 @@ export default function MemberInfo() {
     const v = input.trim();
     if (!v) return false;
 
+    let created = false;
+
     setForm((prev) => {
       if (prev.skills.includes(v)) return prev;
+      created = true;
       return { ...prev, skills: [...prev.skills, v] };
     });
 
-    return true;
+    return created;
   };
 
   return (
@@ -183,7 +266,7 @@ export default function MemberInfo() {
                 <div className="member-info__mobileAvatarCard rounded-4 text-center py-13">
                   <div className="member-info__avatarWrap mx-auto mb-9 mb-lg-6">
                     <img
-                      src="public/memberInfo/user-photo.png"
+                      src={`${import.meta.env.BASE_URL}memberInfo/new-user-photo.jpg`}
                       alt="avatar"
                       className="member-info__avatarImg"
                     />
@@ -380,11 +463,15 @@ export default function MemberInfo() {
                         isMulti
                         isClearable={false}
                         placeholder="輸入後按 Enter 新增"
-                        options={skillOptions}
-                        menuIsOpen={false}
                         value={skillsValue}
                         onChange={(next) => {
                           setSkillsFromSelect(next);
+                          setTouched((prev) => ({ ...prev, skills: true }));
+                        }}
+                        onCreateOption={(inputValue) => {
+                          const created = addSkill(inputValue);
+                          if (!created) return;
+
                           setTouched((prev) => ({ ...prev, skills: true }));
                         }}
                         classNamePrefix="memberSelect"
@@ -392,21 +479,6 @@ export default function MemberInfo() {
                         components={{
                           DropdownIndicator: null,
                           IndicatorSeparator: null,
-                        }}
-                        inputValue={skillInput}
-                        onInputChange={(val, meta) => {
-                          if (meta.action === "input-change")
-                            setSkillInput(val);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key !== "Enter" && e.key !== "Tab") return;
-
-                          const created = addSkill(skillInput);
-                          if (!created) return;
-
-                          e.preventDefault();
-                          setSkillInput("");
-                          setTouched((prev) => ({ ...prev, skills: true }));
                         }}
                         onBlur={() =>
                           setTouched((prev) => ({ ...prev, skills: true }))
@@ -461,7 +533,7 @@ export default function MemberInfo() {
                 <div className="member-info__avatarCard member-info__desktopAvatarCard rounded-4 text-center">
                   <div className="member-info__avatarWrap mx-auto mb-lg-9">
                     <img
-                      src="public/memberInfo/user-photo.png"
+                      src={`${import.meta.env.BASE_URL}memberInfo/new-user-photo.jpg`}
                       alt="avatar"
                       className="member-info__avatarImg"
                     />
