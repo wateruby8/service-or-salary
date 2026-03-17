@@ -72,7 +72,7 @@ export default function HomeCarousel({
       window.removeEventListener('resize', adjustCardHeights);
     };
   }, [data]);
-    if (!data || data.length === 0) {
+    if (!Array.isArray(data) || data.length === 0) {
         return null; // 或者回傳一個 Skeleton 骨架屏
     }
   return (
