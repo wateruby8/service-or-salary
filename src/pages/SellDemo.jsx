@@ -119,6 +119,10 @@ export default function SellDemo(){
         })()
     },[userId])
     // --- GET指定review 結束 ---
+    console.log('當前ID',id);
+    console.log('test',apiUrl);
+    
+    
     if (!isLoading){
         return <p className='h1 text-center py-15'>
             載入中...
