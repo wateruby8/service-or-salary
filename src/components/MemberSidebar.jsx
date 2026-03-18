@@ -51,7 +51,7 @@ export default function MemberSidebar({ isMobile }) {
         <div className="text-center">
           <div className="member-side__avatar mx-auto mb-5">
             <img
-              src={`${import.meta.env.BASE_URL}memberInfo/new-user-photo-sm.jpg`}
+              src={`${import.meta.env.BASE_URL}memberInfo/user-photo-sm.png`}
               alt="avatar"
               className="member-side__avatarImg"
             />
