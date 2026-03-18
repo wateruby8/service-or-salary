@@ -132,7 +132,9 @@ export default function ServiceCardLg({ data }) {
 
                 {/* 按鈕 */}
                 <div className="mt-auto">
-                    <Link to={`/buydemo/${id}`} className="btn btn-secondary-filled fw-bold w-100 mt-auto">
+                    <Link to={`/buydemo/${id}`} 
+                    state={{ backTop: true }}
+                    className="btn btn-secondary-filled fw-bold w-100 mt-auto">
                         我想洽談
                     </Link>
                 </div>

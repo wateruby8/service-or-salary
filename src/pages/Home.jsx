@@ -440,16 +440,6 @@ export default function Home(){
         },
     ];
     const navigate = useNavigate();
-    const isLogin = true; //確認轉頁面前，有無登入
-    const handlePostSell = () => {
-        if (isLogin) {
-        // 已登入：前往刊登頁面
-        navigate('/postselltime');
-        } else {
-        // 未登入：前往登入頁，並可以帶上 state 告訴登入頁之後要跳回來
-        navigate('/login', { state: { from: '/postselltime' } });
-        }
-    };
     //頁尾的"回到網頁上層功能"
     const scrollToTop = () => {
         window.scrollTo({
@@ -468,7 +458,7 @@ export default function Home(){
             try {
                 setIsLoading(true);
                 const [ taskRes, workerRes ] = await Promise.all([
-                        axios.get(`${apiUrl}/tasks?limit=6`),
+                        axios.get(`${apiUrl}/tasks?_limit=6`),
                         axios.get(`${apiUrl}/users?worker.serviceRate_gte=4.5&_limit=6`)
                     ]);
                 setTaskData(taskRes.data);
@@ -519,10 +509,10 @@ export default function Home(){
                                 在意想不到的時刻，會有人需要你的專業<br/>
                                 把空閒變成金錢，個人價值翻倍！
                             </p>
-                            <button type="button" 
-                            className="btn btn-secondary-filled rounded-4 fs-md-4 ls-2 py-4 px-13 py-md-5 px-md-16"
-                            onClick={handlePostSell}
-                            >開發我的時間</button>
+                            <Link to="/postselltime"
+                                state={{ backTop: true }}
+                                className="btn btn-secondary-filled rounded-4   fs-md-4 ls-2 py-4 px-13 py-md-5 px-md-16"
+                            >開發我的時間</Link>
 
                         </div>
                         </div>
@@ -608,7 +598,8 @@ export default function Home(){
                             className="img-fluid mb-7 mb-md-13"
                         />
                         <p className="fs-md-4 fw-bold mb-9">在理想的時間，得到專業服務。</p>
-                        <Link to="/buylist" 
+                        <Link to="/buylist"
+                            state={{ fromHome: true }} 
                             className="btn btn-primary-filled text-neutral fw-bold fs-md-4 px-13 py-4 px-md-16 py-md-5"
                             >
                             找尋專業助手
@@ -695,13 +686,15 @@ export default function Home(){
             </div>
             <div className="d-flex justify-content-center home-s5-btn-mt"
              >
-                <button type="button" className="btn btn-primary-filled
+                <Link to="/postselltime" 
+                    state={{ fromHome: true }}
+                    className="btn btn-primary-filled
                     h5 fs-md-4 ls-2
                     py-4 px-13 py-md-5 px-md-16"
-                    onClick={handlePostSell}
+                    
                 >
                     成為時間賣家
-                </button>
+                </Link>
             </div>
             <div className="position-absolute bottom-0 start-50 translate-middle-x">
                 <button 

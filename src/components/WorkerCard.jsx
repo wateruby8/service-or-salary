@@ -48,8 +48,10 @@ export default function WorkerCard({ data,cardClass = "" }) {
                     </span>
                 </div>
                 <div className="mt-auto">
-                    <Link to={`/selldemo/${id}`} className="btn btn-secondary-filled 
-                   py-4 py-md-5 w-100">
+                    <Link to={`/selldemo/${id}`} 
+                        state={{ backTop: true }}
+                        className="btn btn-secondary-filled 
+                    py-4 py-md-5 w-100">
                         我想洽談
                     </Link>
                 </div>
