@@ -72,7 +72,7 @@ export default function SellDemo(){
                     setServiceData(res.data);
                     setIsLoading(true);
                 }
-                console.log(res.data);
+                // console.log(res.data);
             } catch (error) {
                 
             }
@@ -111,7 +111,7 @@ export default function SellDemo(){
         (async()=>{
             try {
                 const res = await axios.get(`${apiUrl}/reviews?workerId=${userId}&_expand=user`)
-                console.log('re',res.data);
+                // console.log('re',res.data);
                 setReviewData(res.data);
             } catch (error) {
                 
@@ -119,10 +119,6 @@ export default function SellDemo(){
         })()
     },[userId])
     // --- GET指定review 結束 ---
-    console.log('當前ID',id);
-    console.log('test',apiUrl);
-    
-    
     if (!isLoading){
         return <p className='h1 text-center py-15'>
             載入中...
