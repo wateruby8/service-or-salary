@@ -1,0 +1,87 @@
+.my-calendar {
+  // 按鈕初始化
+  .fc .btn {
+    --bs-btn-bg: var(--neutral);
+    --bs-btn-border-color: transparent;
+    --bs-btn-color: var(--secondary-500);
+
+    --bs-btn-hover-bg: var(--secondary-700);
+    --bs-btn-hover-color: var(--neutral);
+
+    --bs-btn-active-bg: var(--secondary-900);
+    --bs-btn-hover-color: var(--neutral);
+  }
+
+  // 月 + 週 + 日 + 待辦事項 按鈕
+  .fc-toolbar-chunk:last-child {
+    .btn-group {
+      border: 2px solid var(--secondary-500);
+    }
+  }
+
+  .fc-prev-button, .fc-next-button {
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-calendar {
+    /* =========================
+       保持 toolbar flex
+       ========================= */
+    .fc-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* =========================
+       第一行：prev + title + next
+       ========================= */
+
+    .fc-toolbar-chunk:nth-child(1) {
+      flex: 0 0 auto;
+    }
+
+    .fc-toolbar-chunk:nth-child(2) {
+      flex: 1;
+      display: flex;
+      justify-content: end;
+    }
+
+    .fc-toolbar-chunk:nth-child(3) {
+      flex: 0 0 auto;
+    }
+
+    /* space-between */
+    .fc-toolbar-chunk:nth-child(1),
+    .fc-toolbar-chunk:nth-child(3) {
+      display: flex;
+    }
+
+    /* =========================
+       第二行：view buttons
+       ========================= */
+    .fc-toolbar-chunk:nth-child(4),
+    .fc-toolbar-chunk:nth-child(3) {
+      width: 100%;
+    }
+
+    /* ⚠️ FullCalendar bootstrap5 plugin 會把 buttons 放 right chunk */
+    .fc-toolbar-chunk:last-child {
+      flex: 0 0 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .fc-toolbar-chunk:last-child .fc-button-group {
+      width: 100%;
+      display: flex;
+    }
+
+    .fc-toolbar-chunk:last-child .fc-button {
+      flex: 1;
+    }
+  }
+}
