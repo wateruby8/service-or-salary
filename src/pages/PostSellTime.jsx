@@ -1,24 +1,158 @@
 // 3-1-2. 接案者-刊登服務賣時間
+import { useState, useEffect, useRef } from "react";
+
+// FullCalendar React
 import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
+// FullCalendar plugins
+import timeGridPlugin from "@fullcalendar/timegrid"; // 週 + 日
+import dayGridPlugin from "@fullcalendar/daygrid"; // 月
+import listPlugin from "@fullcalendar/list"; // 待辦事項
+import interactionPlugin, { Draggable } from "@fullcalendar/interaction"; // 拖拉
+// FullCalendar 樣式
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
+// FullCalendar 語系
 import twLocale from "@fullcalendar/core/locales/zh-tw";
 
 export default function PostSellTime() {
+  const [formData, setFormData] = useState({
+    userId: "u-002",
+    serviceTime: {
+      acceptAnytime: false,
+      times: [],
+    },
+    category: "",
+    subCategory: "",
+    serviceTitle: "",
+    servicePrice: {
+      currency: "TWD",
+      minPrice: "",
+      maxPrice: "",
+    },
+    serviceLocations: [],
+    serviceKeywords: "",
+    serviceTags: [],
+    serviceDetail: "",
+    demoLink: "",
+    demoImgs: [],
+  });
+const API_URL = import.meta.env.VITE_API_URL;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handlePriceChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      servicePrice: {
+        ...prev.servicePrice,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleCheckbox = (e) => {
+    const { name, value, checked } = e.target;
+
+    setFormData((prev) => {
+      const list = prev[name];
+
+      return {
+        ...prev,
+        [name]: checked ? [...list, value] : list.filter((i) => i !== value),
+      };
+    });
+  };
+
+  const handleAnytime = (e) => {
+    const checked = e.target.checked;
+
+    setFormData((prev) => ({
+      ...prev,
+      serviceTime: {
+        ...prev.serviceTime,
+        acceptAnytime: checked,
+      },
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      ...formData,
+      creatAt: new Date().toISOString(),
+
+      serviceKeywords: formData.serviceKeywords
+        .split(" ")
+        .map((k) => k.replace("#", "")),
+
+      servicePrice: {
+        ...formData.servicePrice,
+        minPrice: Number(formData.servicePrice.minPrice),
+        maxPrice: Number(formData.servicePrice.maxPrice),
+      },
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/services`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      alert("成功");
+    } catch (err) {
+      console.error(err);
+      alert("失敗");
+    }
+  };
+
   return (
-    <div>
-      <div className="d-flex justify-content-between align-items-center">
-        <h3 className="border-bottom border-primary-300 border-5 mb-7">
-          服務刊登
-        </h3>
+    <form onSubmit={handleSubmit} className="container">
+      <div className="d-flex justify-content-between align-items-center mt-13">
+        <h3 className="member-info__titleText mb-7 ">服務刊登</h3>
         <p className="text-warning-500">*為必填項目，請完整填寫</p>
       </div>
-      <div className="mb-13">
+      <div className="mb-13 my-calendar">
         <FullCalendar
-          plugins={[dayGridPlugin, bootstrap5Plugin]}
-          initialView="dayGridMonth"
+          plugins={[
+            timeGridPlugin,
+            dayGridPlugin,
+            listPlugin,
+            interactionPlugin,
+            bootstrap5Plugin,
+          ]}
+          initialView="timeGridWeek"
           themeSystem="bootstrap5"
           locale={twLocale}
+          // 標題列擺設順序
+          headerToolbar={{
+            left: "prev,next",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+          }}
+          // 自訂按鈕名稱
+          buttonText={{
+            prev: "<",
+            next: ">",
+            month: "月",
+            week: "週",
+            day: "日",
+            listWeek: "待辦事項",
+          }}
+          droppable={true}
+          editable={true}
         />
       </div>
       <div className="mb-13">
@@ -27,7 +161,7 @@ export default function PostSellTime() {
             服務時間<span className="required text-warning-500">*</span>
           </h5>
           <input className="me-2" type="checkbox" value="free" id="free" />
-          <label className="" for="free">
+          <label className="" htmlFor="free">
             可接受聊天室預約其他時間
           </label>
         </div>
@@ -41,12 +175,13 @@ export default function PostSellTime() {
               <select
                 name="category"
                 id="category"
-                className="border rounded w-100 py-4 px-5"              
+                className="border rounded w-100 py-4 px-5"
+                onChange={handleChange}
               >
                 <option value="">選擇服務分類</option>
-                <option value="">居家生活</option>
-                <option value="">教育訓練</option>
-                <option value="">行銷企劃</option>
+                <option value="居家生活">居家生活</option>
+                <option value="教育訓練">教育訓練</option>
+                <option value="行銷企劃">行銷企劃</option>
               </select>
             </div>
             <div className="col-12 col-md-6">
@@ -54,11 +189,12 @@ export default function PostSellTime() {
                 name="subCategory"
                 id="subCategory"
                 className="border rounded w-100 py-4 px-5"
+                onChange={handleChange}
               >
                 <option value="">選擇服務細項</option>
-                <option value="">清潔服務</option>
-                <option value="">搬家與回收</option>
-                <option value="">家電與家居維修</option>
+                <option value="清潔服務">清潔服務</option>
+                <option value="搬家與回收">搬家與回收</option>
+                <option value="家電與家居維修">家電與家居維修</option>
               </select>
             </div>
           </div>
@@ -72,6 +208,7 @@ export default function PostSellTime() {
             type="text"
             className="py-4 ps-5 w-100 border rounded"
             placeholder="例：老屋翻新專做台北市｜換新屋團隊"
+            onChange={handleChange}
           />
         </div>
 
@@ -79,6 +216,16 @@ export default function PostSellTime() {
           <h5 className="mb-4">
             服務費率<span className="required text-warning-500">*</span>
           </h5>
+          <input
+            name="minPrice"
+            placeholder="最低價"
+            onChange={handlePriceChange}
+          />
+          <input
+            name="maxPrice"
+            placeholder="最高價"
+            onChange={handlePriceChange}
+          />
         </div>
 
         <div className="mb-11">
@@ -94,7 +241,7 @@ export default function PostSellTime() {
                 value="taipei"
                 id="taipei"
               />
-              <label className="" for="taipei">
+              <label className="" htmlFor="taipei">
                 台北市
               </label>
             </div>
@@ -105,7 +252,7 @@ export default function PostSellTime() {
                 value="xinbei"
                 id="xinbei"
               />
-              <label className="" for="xinbei">
+              <label className="" htmlFor="xinbei">
                 新北市
               </label>
             </div>
@@ -116,7 +263,7 @@ export default function PostSellTime() {
                 value="keelung"
                 id="keelung"
               />
-              <label className="" for="keelung">
+              <label className="" htmlFor="keelung">
                 基隆市
               </label>
             </div>
@@ -127,7 +274,7 @@ export default function PostSellTime() {
                 value="taoyuan"
                 id="taoyuan"
               />
-              <label className="" for="taoyuan">
+              <label className="" htmlFor="taoyuan">
                 桃園市
               </label>
             </div>
@@ -138,7 +285,7 @@ export default function PostSellTime() {
                 value="hsinchucountry"
                 id="hsinchucountry"
               />
-              <label className="" for="hsinchucountry">
+              <label className="" htmlFor="hsinchucountry">
                 新竹縣
               </label>
             </div>
@@ -149,7 +296,7 @@ export default function PostSellTime() {
                 value="hsinchu"
                 id="hsinchu"
               />
-              <label className="" for="hsinchu">
+              <label className="" htmlFor="hsinchu">
                 新竹市
               </label>
             </div>
@@ -175,7 +322,7 @@ export default function PostSellTime() {
                 value="longterm"
                 id="longterm"
               />
-              <label className="" for="longterm">
+              <label className="" htmlFor="longterm">
                 長期配合
               </label>
             </div>
@@ -186,7 +333,7 @@ export default function PostSellTime() {
                 value="shortterm"
                 id="shortterm"
               />
-              <label className="" for="shortterm">
+              <label className="" htmlFor="shortterm">
                 短期配合
               </label>
             </div>
@@ -197,7 +344,7 @@ export default function PostSellTime() {
                 value="urgent"
                 id="urgent"
               />
-              <label className="" for="urgent">
+              <label className="" htmlFor="urgent">
                 急件服務
               </label>
             </div>
@@ -226,7 +373,10 @@ export default function PostSellTime() {
 
         <div>
           <h5 className="mb-4">作品紀錄</h5>
-          <button type="button" className="btn btn-primary-500 w-100 py-4 text-neutral">
+          <button
+            type="button"
+            className="btn btn-primary-500 w-100 py-4 text-neutral"
+          >
             上傳作品集圖片
           </button>
         </div>
@@ -236,6 +386,6 @@ export default function PostSellTime() {
           賣時間
         </button>
       </div>
-    </div>
+    </form>
   );
 }

@@ -16,6 +16,14 @@ $custom-colors: (
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
+// 轉成 CSS variables（給 FullCalendar / 全站用）
+:root {
+  @each $name, $value in $custom-colors {
+    --#{$name}: #{$value};
+  }
+}
+
+
 // Tag
 $tag-colors: (
   "urgent": (
