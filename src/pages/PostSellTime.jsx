@@ -43,7 +43,7 @@ const schema = z
       data.serviceTime.acceptAnytime || data.serviceTime.times.length > 0,
     {
       message: "請設定至少一個服務時間或勾選可接受聊天室預約",
-      path: ["serviceTime"], // 對應 react-hook-form 的錯誤訊息位置
+      path: ["serviceTime"], 
     },
   );
 
@@ -52,8 +52,7 @@ export default function PostSellTime() {
     register,
     handleSubmit,
     setValue,
-    watch,
-    control,
+    watch,   
     reset,
     formState: { errors },
   } = useForm({
