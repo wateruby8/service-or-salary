@@ -102,60 +102,66 @@ export default function Register(){
         })()
     };
     return(
-        <div className='bg-primary-100 p-8 rounded-1'>
-            <h1 className='h3 text-center'>
-                加入時務所
-            </h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <InputText 
-                    id="client.name"
-                    type="text"
-                    labelText="請輸入暱稱，作為委託案件時的名稱（ 2 ~ 10 字元）"
-                    errors={errors}
-                    register={register}
-                    rule={{
-                        required: "請輸入暱稱",
-                        minLength:{
-                            value:2,
-                            message: "暱稱需 2 個字以上"
-                        },
-                        maxLength:{
-                            value:10,
-                            message: "暱稱限 10 個字以內"
-                        }
-                    }}
-                />
-                <InputText 
-                    id="email"
-                    type="email"
-                    labelText="請輸入電子信箱"
-                    errors={errors}
-                    register={register}
-                    rule={{
-                        required: "請輸入 電子信箱",
-                        pattern: {
-                            value: /^\S+@\S+$/i,
-                            message: "電子信箱格式錯誤"
-                        }
-                    }}
-                />
-                <InputPassword
-                    id="password"
-                    labelText="請輸入密碼（8 ~ 20 碼）"
-                    register={register}
-                    errors={errors}
-                    rule={{ 
-                        required: "請輸入密碼", 
-                        minLength: { value: 8, message: "密碼需至少 8 碼" } ,
-                        maxLength: { value: 20, message: "密碼限 20 碼以內" }
-                    }}
-                />
-                <button type="submit" 
-                    className="btn btn-primary-filled w-100 py-3 
-                        fs-6 fs-md-5 fw-bold">
-                    註冊會員
-                </button>
-            </form>
+        <div className='container  p-8 rounded-1'>
+            <div className="row">
+                <div className="col-md-8 mx-auto">
+                    <div className="bg-primary-100 px-12 py-15 rounded-4">
+                        <h1 className='h3 text-center'>
+                            加入時務所
+                        </h1>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <InputText 
+                                id="client.name"
+                                type="text"
+                                labelText="請輸入暱稱，作為委託案件時的名稱（ 2 ~ 10 字元）"
+                                errors={errors}
+                                register={register}
+                                rule={{
+                                    required: "請輸入暱稱",
+                                    minLength:{
+                                        value:2,
+                                        message: "暱稱需 2 個字以上"
+                                    },
+                                    maxLength:{
+                                        value:10,
+                                        message: "暱稱限 10 個字以內"
+                                    }
+                                }}
+                            />
+                            <InputText 
+                                id="email"
+                                type="email"
+                                labelText="請輸入電子信箱"
+                                errors={errors}
+                                register={register}
+                                rule={{
+                                    required: "請輸入 電子信箱",
+                                    pattern: {
+                                        value: /^\S+@\S+$/i,
+                                        message: "電子信箱格式錯誤"
+                                    }
+                                }}
+                            />
+                            <InputPassword
+                                id="password"
+                                labelText="請輸入密碼（8 ~ 20 碼）"
+                                register={register}
+                                errors={errors}
+                                rule={{ 
+                                    required: "請輸入密碼", 
+                                    minLength: { value: 8, message: "密碼需至少 8 碼" } ,
+                                    maxLength: { value: 20, message: "密碼限 20 碼以內" }
+                                }}
+                            />
+                            <button type="submit" 
+                                className="btn btn-primary-filled w-100 py-3 
+                                    fs-6 fs-md-5 fw-bold">
+                                註冊會員
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

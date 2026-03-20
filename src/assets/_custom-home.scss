@@ -170,9 +170,7 @@ $section-spacing-sm: $spacer * 4;
   font-weight: 500;
   line-height: 150%;
   border-radius: 8px;
-  @include rwd-up(md){
-    border-radius: 12px;
-  }
+
   @include rwd-up(lg){
     font-size: 20px;
     line-height: 150%;
