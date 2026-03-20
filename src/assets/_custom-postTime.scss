@@ -19,9 +19,48 @@
     }
   }
 
-  .fc-prev-button, .fc-next-button {
+  .fc-prev-button,
+  .fc-next-button {
     font-weight: 700;
   }
+}
+
+.price-slider {
+  /* slider 主軸 */
+  .noUi-connect {
+    background: var(--primary-500);
+  }
+  /* 背景 */
+  .noUi-target {   
+    border-radius: 10px;
+    border: none;
+    height: 8px;
+  }
+ 
+
+  /* handle（左右按鈕） */
+  .noUi-handle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%; /* 改圓形 */
+    background: var(--neutral);
+    border: 1px solid var(--primary-100);    
+    cursor: pointer;
+
+  }
+  /* 移除原本線條 */
+  .noUi-handle::before,
+  .noUi-handle::after {
+    display: none;
+  }
+}
+
+/* 價格框 */
+.price-box {   
+  
+  font-weight: 500;
+  min-width: 100px;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
