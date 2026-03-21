@@ -18,6 +18,8 @@ import twLocale from "@fullcalendar/core/locales/zh-tw";
 import noUiSlider from "nouislider";
 import "nouislider/dist/nouislider.css";
 
+import sweetalert from "sweetalert2";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const schema = z
@@ -43,7 +45,7 @@ const schema = z
       data.serviceTime.acceptAnytime || data.serviceTime.times.length > 0,
     {
       message: "請設定至少一個服務時間或勾選可接受聊天室預約",
-      path: ["serviceTime"], 
+      path: ["serviceTime"],
     },
   );
 
@@ -52,11 +54,12 @@ export default function PostSellTime() {
     register,
     handleSubmit,
     setValue,
-    watch,   
+    watch,
     reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
+    shouldFocusError: false,
     defaultValues: {
       serviceTitle: "",
       categoryId: "",
@@ -79,7 +82,7 @@ export default function PostSellTime() {
 
   const sliderRef = useRef(null);
   const dragRef = useRef(null);
-
+  const calendarRef = useRef(null);
   const categoryId = watch("categoryId");
   const serviceTime = watch("serviceTime");
 
@@ -191,14 +194,16 @@ export default function PostSellTime() {
     const start = info.event.start || new Date();
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-    info.event.setStart(start);
-    info.event.setEnd(end);
-    info.event.setProp("id", id);
-
     const newTimes = [
       ...serviceTime.times,
       { id, startTime: start.toISOString(), endTime: end.toISOString() },
     ];
+
+    info.event.setStart(start);
+    info.event.setEnd(end);
+    info.event.setProp("id", id);
+    info.event.setProp("title", `時段 ${newTimes.length}`); // 動態 title
+
     setValue("serviceTime", { ...serviceTime, times: newTimes });
   };
 
@@ -209,6 +214,16 @@ export default function PostSellTime() {
       ...serviceTime.times,
       { id, startTime: info.dateStr, endTime: info.dateStr },
     ];
+
+    const calendarApi = info.view.calendar;
+    calendarApi.addEvent({
+      id,
+      title: `時段 ${newTimes.length}`, // 動態 title
+      start: info.date,
+      end: info.date,
+      allDay: false,
+    });
+
     setValue("serviceTime", { ...serviceTime, times: newTimes });
   };
 
@@ -242,23 +257,56 @@ export default function PostSellTime() {
 
       if (!res.ok) throw new Error("上傳失敗");
 
-      const result = await res.json();
-      alert("服務刊登成功！");
+      await res.json();
+
+      await sweetalert.fire({
+        icon: "success",
+        title: "服務已刊登，祝您接案順利！",
+        confirmButtonText: "確認",
+        customClass: {
+          confirmButton: "btn btn-secondary-500 px-13 py-4",
+        },
+        buttonsStyling: false,
+      });
+
       reset();
     } catch (err) {
       console.error(err);
-      alert("上傳失敗，請稍後再試");
+      sweetalert.fire({
+        icon: "error",
+        title: "提交失敗",
+        text: "請稍後再試",
+        confirmButtonText: "返回",
+        customClass: {
+          confirmButton: "btn btn-secondary-500 px-13 py-4",
+        },
+        buttonsStyling: false,
+      });
     }
   };
 
+  const onError = () => {
+    sweetalert.fire({
+      icon: "error",
+      title: "提交失敗",
+      text: "請確認資料是否填寫完整",
+      confirmButtonText: "返回",
+      customClass: {
+        confirmButton: "btn btn-secondary-500 px-13 py-4",
+      },
+      buttonsStyling: false,
+    });
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="container">
+    <form onSubmit={handleSubmit(onSubmit, onError)} className="container">
       <div className="d-flex justify-content-between align-items-center mt-13">
         <h3 className="member-info__titleText mb-7 ">服務刊登</h3>
         <p className="text-warning-500">*為必填項目，請完整填寫</p>
       </div>
       <div className="mb-13 my-calendar">
         <FullCalendar
+          ref={calendarRef}
           plugins={[
             timeGridPlugin,
             dayGridPlugin,
@@ -350,17 +398,52 @@ export default function PostSellTime() {
                     .padStart(2, "0")}`;
 
                 return (
-                  <p key={t.id} className="text-sm mb-1">
-                    時段 {index + 1}: {format(start)} 至 {format(end)}
-                  </p>
+                  <div key={t.id} className="d-flex align-items-center mb-1">
+                    <span>
+                      時段{" "}
+                      {serviceTime.times.findIndex((x) => x.id === t.id) + 1}:{" "}
+                      {format(new Date(t.startTime))} 至{" "}
+                      {format(new Date(t.endTime))}
+                    </span>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary-500 rounded ms-3"
+                      onClick={() => {
+                        // 1️⃣ 刪除列表資料
+                        const updatedTimes = serviceTime.times.filter(
+                          (item) => item.id !== t.id,
+                        );
+                        setValue("serviceTime", {
+                          ...serviceTime,
+                          times: updatedTimes,
+                        });
+
+                        // 2️⃣ 刪除行事曆事件
+                        const calendarApi = calendarRef.current?.getApi();
+                        const event = calendarApi?.getEventById(t.id);
+                        if (event) event.remove();
+
+                        // 3️⃣ 重編號 FullCalendar 上剩餘事件
+                        updatedTimes.forEach((time, idx) => {
+                          const event = calendarApi.getEventById(time.id);
+                          if (event) event.setProp("title", `時段 ${idx + 1}`);
+                        });
+                      }}
+                    >
+                      x
+                    </button>
+                  </div>
                 );
               })}
 
               <div
                 className="fc-event bg-primary-300"
-                data-event='{"title":"時段一","duration":3600}'
+                data-event={JSON.stringify({
+                  title: watch("serviceTitle") || "可服務時間",
+                  duration: 3600,
+                })}
                 style={{
-                  width: "200px",
+                  width: "300px",
                   borderRadius: "5px",
                   margin: "10px 0",
                   padding: "10px",
@@ -369,7 +452,7 @@ export default function PostSellTime() {
                   textAlign: "center",
                 }}
               >
-                拖拉我至行事曆建立時段
+                拖拉我至行事曆建立服務時間
               </div>
             </div>
           )}
@@ -452,10 +535,7 @@ export default function PostSellTime() {
           <div className="mb-5 price-slider" ref={sliderRef}></div>
 
           <div className="d-flex justify-content-between style={{ maxWidth: 360 }}">
-            <div
-              className="d-flex align-items-center gap-2 price-box"
-              style={{ minWidth: 150, gap: "6px" }}
-            >
+            <div className="d-flex align-items-center gap-2 price-box">
               <span>下限</span>
               <span>NT$</span>
               <input
