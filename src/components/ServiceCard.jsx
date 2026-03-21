@@ -132,7 +132,9 @@ const finalTimeText = timeDisplayParts.join('、');
                 </small>
             </div>
             <div className="mt-auto">
-                <Link to={`/buydemo/${id}`} className="btn btn-secondary-filled fw-bold w-100 mt-auto">我想洽談</Link>
+                <Link to={`/buydemo/${id}`}
+                    state={{ backTop: true }}
+                    className="btn btn-secondary-filled fw-bold w-100 mt-auto">我想洽談</Link>
             </div>
             
         </div>
