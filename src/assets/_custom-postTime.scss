@@ -4,12 +4,9 @@
     --bs-btn-bg: var(--neutral);
     --bs-btn-border-color: transparent;
     --bs-btn-color: var(--secondary-500);
-
     --bs-btn-hover-bg: var(--secondary-700);
     --bs-btn-hover-color: var(--neutral);
-
     --bs-btn-active-bg: var(--secondary-900);
-    --bs-btn-hover-color: var(--neutral);
   }
 
   // 月 + 週 + 日 + 待辦事項 按鈕
@@ -29,24 +26,16 @@
   /* slider 主軸 */
   .noUi-connect {
     background: var(--primary-500);
-  }
-  /* 背景 */
-  .noUi-target {   
-    border-radius: 10px;
-    border: none;
-    height: 8px;
-  }
- 
+  }  
 
   /* handle（左右按鈕） */
   .noUi-handle {
-    width: 24px;
+    width: 30px;
     height: 24px;
-    border-radius: 50%; /* 改圓形 */
+    border-radius: 80%; 
     background: var(--neutral);
-    border: 1px solid var(--primary-100);    
+    border: 1px solid var(--primary-100);
     cursor: pointer;
-
   }
   /* 移除原本線條 */
   .noUi-handle::before,
@@ -56,8 +45,7 @@
 }
 
 /* 價格框 */
-.price-box {   
-  
+.price-box {
   font-weight: 500;
   min-width: 100px;
   text-align: center;
